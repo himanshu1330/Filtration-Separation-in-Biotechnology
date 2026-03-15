@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Membrane Separation in Biotechnology</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" defer></script>
+  <style>
+    /* ── Reset & Variables ─────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0b0f1a;
+      --bg2: #111827;
+      --bg3: #1a2235;
+      --card: #1e2d45;
+      --accent: #00c8ff;
+      --accent2: #7c5cfc;
+      --accent3: #00e5a0;
+      --accent4: #ff6b6b;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --border: rgba(255,255,255,0.08);
+      --glow: 0 0 20px rgba(0,200,255,0.3);
+      --radius: 16px;
+      --transition: 0.35s cubic-bezier(.4,0,.2,1);
+    }
+    [data-theme="light"] {
+      --bg: #f0f4f8;
+      --bg2: #e2e8f0;
+      --bg3: #cbd5e1;
+      --card: #ffffff;
+      --text: #1e293b;
+      --muted: #475569;
+      --border: rgba(0,0,0,0.1);
+      --glow: 0 0 20px rgba(0,150,200,0.2);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── Scrollbar ─────────────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+    /* ── Utility ────────────────────────────────────────────────── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 80px 0; }
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 700;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .section-sub {
+      color: var(--muted);
+      max-width: 680px;
+      margin-bottom: 48px;
+      font-size: 1.05rem;
+    }
+    .tag {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: var(--glow); }
+
+    /* ── Sticky Nav ─────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(11,15,26,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    [data-theme="light"] nav { background: rgba(240,244,248,0.9); }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .nav-brand {
+      font-size: 1.1rem; font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex; gap: 8px; list-style: none;
+      align-items: center;
+    }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: 0.88rem; padding: 6px 12px;
+      border-radius: 8px; transition: background var(--transition), color var(--transition);
+    }
+    .nav-links a:hover { background: var(--bg3); color: var(--text); }
+    .theme-btn {
+      background: var(--bg3); border: 1px solid var(--border);
+      color: var(--text); padding: 6px 14px;
+      border-radius: 8px; cursor: pointer;
+      font-size: 0.85rem; transition: background var(--transition);
+    }
+    .theme-btn:hover { background: var(--accent); color: #000; }
+    .nav-toggle { display: none; background: none; border: none; color: var(--text); font-size: 1.5rem; cursor: pointer; }
+
+    /* ── Hero ───────────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      background: radial-gradient(ellipse at 60% 40%, rgba(0,200,255,0.08) 0%, transparent 60%),
+                  radial-gradient(ellipse at 20% 70%, rgba(124,92,252,0.08) 0%, transparent 50%),
+                  var(--bg);
+      text-align: center;
+    }
+    #hero-canvas {
+      position: absolute; inset: 0; pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 860px; padding: 32px 24px; }
+    .hero-eyebrow {
+      font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 20px;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .hero-eyebrow::before, .hero-eyebrow::after {
+      content: ''; display: block; height: 1px; width: 40px; background: var(--accent);
+    }
+    .hero-title {
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 800; line-height: 1.15;
+      margin-bottom: 24px;
+    }
+    .hero-title span {
+      background: linear-gradient(135deg, var(--accent), var(--accent2), var(--accent3));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-desc { font-size: 1.1rem; color: var(--muted); max-width: 640px; margin: 0 auto 40px; }
+    .hero-chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 40px; }
+    .hero-chip {
+      padding: 6px 16px; border-radius: 20px;
+      border: 1px solid var(--border);
+      font-size: 0.82rem; color: var(--muted);
+      background: var(--bg3);
+    }
+    .hero-cta {
+      display: inline-block; padding: 14px 32px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #000; font-weight: 700; border-radius: 10px;
+      text-decoration: none; font-size: 0.95rem;
+      transition: transform var(--transition), box-shadow var(--transition);
+      box-shadow: 0 4px 24px rgba(0,200,255,0.3);
+    }
+    .hero-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,200,255,0.45); }
+    .scroll-hint {
+      position: absolute; bottom: 32px; left: 50%;
+      transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      color: var(--muted); font-size: 0.78rem; letter-spacing: 0.1em;
+      text-transform: uppercase; animation: bounce 2s infinite;
+    }
+    .scroll-hint svg { width: 20px; height: 20px; }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(6px)} }
+
+    /* ── Stats Bar ──────────────────────────────────────────────── */
+    .stats-bar {
+      background: var(--bg2); border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border); padding: 32px 0;
+    }
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 24px; }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-size: 2.2rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent3));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
+    }
+    .stat-label { color: var(--muted); font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; }
+
+    /* ── Process Tabs ───────────────────────────────────────────── */
+    .tab-bar {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+    .tab-btn {
+      padding: 10px 22px; border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg3); color: var(--muted);
+      cursor: pointer; font-size: 0.9rem; font-weight: 600;
+      transition: all var(--transition); white-space: nowrap;
+    }
+    .tab-btn.active, .tab-btn:hover {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #000; border-color: transparent;
+      box-shadow: 0 4px 16px rgba(0,200,255,0.25);
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; animation: fadeIn 0.35s ease; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+
+    .process-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    @media(max-width:700px){ .process-grid{ grid-template-columns: 1fr; } }
+
+    .process-header { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+    .process-icon {
+      width: 56px; height: 56px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; flex-shrink: 0;
+    }
+    .process-title { font-size: 1.5rem; font-weight: 700; }
+    .process-sub { color: var(--muted); font-size: 0.9rem; }
+
+    .spec-list { list-style: none; }
+    .spec-list li {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 0.9rem;
+    }
+    .spec-list li:last-child { border-bottom: none; }
+    .spec-key { color: var(--muted); min-width: 150px; flex-shrink: 0; }
+    .spec-val { font-weight: 600; }
+
+    .pressure-bar-wrap { margin-top: 24px; }
+    .pressure-bar-label { font-size: 0.82rem; color: var(--muted); margin-bottom: 8px; }
+    .pressure-bar-track {
+      height: 10px; background: var(--bg3); border-radius: 5px; overflow: hidden;
+    }
+    .pressure-bar-fill {
+      height: 100%; border-radius: 5px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      transition: width 1.2s cubic-bezier(.4,0,.2,1);
+    }
+
+    /* ── Pore Size Visualizer ────────────────────────────────────── */
+    .pore-viz {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px; margin-top: 32px;
+    }
+    .pore-viz h3 { font-size: 1.1rem; margin-bottom: 6px; }
+    .pore-viz p { color: var(--muted); font-size: 0.85rem; margin-bottom: 20px; }
+    .pore-scale {
+      position: relative; height: 64px;
+      background: linear-gradient(90deg, var(--bg), var(--bg3));
+      border-radius: 8px; overflow: hidden;
+    }
+    .pore-scale-track {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg,
+        var(--accent4) 0%, var(--accent4) 20%,
+        var(--accent) 20%, var(--accent) 50%,
+        var(--accent2) 50%, var(--accent2) 80%,
+        var(--accent3) 80%, var(--accent3) 100%
+      );
+      border-radius: 2px;
+    }
+    .pore-marker {
+      position: absolute; top: 0; width: 2px; height: 100%; background: rgba(255,255,255,0.6);
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: flex-start; padding-top: 4px;
+    }
+    .pore-marker span {
+      font-size: 0.65rem; white-space: nowrap; color: var(--muted);
+      transform: rotate(-45deg) translateX(-8px); margin-top: 4px;
+    }
+    .pore-legend {
+      display: flex; flex-wrap: wrap; gap: 12px; margin-top: 12px;
+    }
+    .pore-legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: var(--muted); }
+    .pore-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+    /* ── Comparison Table ────────────────────────────────────────── */
+    .table-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    thead { background: linear-gradient(135deg, rgba(0,200,255,0.1), rgba(124,92,252,0.1)); }
+    th { padding: 16px 20px; text-align: left; font-weight: 700; white-space: nowrap; }
+    td { padding: 14px 20px; border-top: 1px solid var(--border); vertical-align: top; }
+    tr:hover td { background: rgba(0,200,255,0.04); }
+    .badge {
+      display: inline-block; padding: 2px 8px; border-radius: 6px;
+      font-size: 0.75rem; font-weight: 600; white-space: nowrap;
+    }
+
+    /* ── Flux Equation Card ─────────────────────────────────────── */
+    .equation-card {
+      background: linear-gradient(135deg, rgba(0,200,255,0.06), rgba(124,92,252,0.06));
+      border: 1px solid rgba(0,200,255,0.2);
+      border-radius: var(--radius); padding: 36px;
+      text-align: center; margin: 32px 0;
+    }
+    .equation-display {
+      font-size: clamp(1rem, 2.5vw, 1.5rem);
+      font-family: 'Georgia', serif;
+      margin: 16px 0;
+      padding: 20px;
+      background: var(--bg3);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+    }
+    .equation-vars {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px; margin-top: 24px; text-align: left;
+    }
+    .var-item {
+      background: var(--bg3); padding: 12px 16px;
+      border-radius: 10px; border: 1px solid var(--border);
+    }
+    .var-sym { font-family: 'Georgia', serif; font-size: 1.1rem; font-weight: 700; color: var(--accent); }
+    .var-desc { font-size: 0.82rem; color: var(--muted); margin-top: 4px; }
+
+    /* ── Interactive Simulator ────────────────────────────────────── */
+    .simulator {
+      background: var(--bg3); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px; margin-top: 24px;
+    }
+    .simulator h3 { margin-bottom: 20px; font-size: 1.1rem; }
+    .slider-group { margin-bottom: 20px; }
+    .slider-group label {
+      display: flex; justify-content: space-between;
+      font-size: 0.88rem; color: var(--muted); margin-bottom: 8px;
+    }
+    .slider-group label span { color: var(--accent); font-weight: 700; }
+    input[type=range] {
+      width: 100%; height: 6px; border-radius: 3px;
+      background: var(--bg); accent-color: var(--accent); cursor: pointer;
+    }
+    .sim-result {
+      display: flex; align-items: center; gap: 16px;
+      background: var(--card); border-radius: 10px; padding: 16px;
+    }
+    .sim-flux {
+      font-size: 2rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent3));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .sim-label { font-size: 0.8rem; color: var(--muted); }
+
+    /* ── Material Cards ─────────────────────────────────────────── */
+    .materials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .material-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 24px; cursor: pointer;
+      transition: all var(--transition);
+    }
+    .material-card:hover { border-color: var(--accent); box-shadow: var(--glow); }
+    .material-card.expanded .material-detail { display: block; }
+    .material-icon { font-size: 2rem; margin-bottom: 12px; }
+    .material-name { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .material-abbr { color: var(--accent); font-size: 0.8rem; font-weight: 600; }
+    .material-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .material-detail { display: none; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); }
+    .material-detail p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+    .expand-hint { font-size: 0.78rem; color: var(--muted); margin-top: 10px; }
+
+    /* ── Fouling Accordion ──────────────────────────────────────── */
+    .accordion-item {
+      border: 1px solid var(--border); border-radius: 12px;
+      margin-bottom: 12px; overflow: hidden;
+    }
+    .accordion-trigger {
+      width: 100%; background: var(--bg3); border: none;
+      padding: 18px 24px; text-align: left;
+      display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer; color: var(--text); font-size: 0.95rem; font-weight: 600;
+      transition: background var(--transition);
+    }
+    .accordion-trigger:hover { background: var(--card); }
+    .accordion-trigger .icon {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem; flex-shrink: 0;
+    }
+    .accordion-arrow {
+      transition: transform var(--transition); font-size: 1rem; color: var(--muted);
+    }
+    .accordion-item.open .accordion-arrow { transform: rotate(180deg); }
+    .accordion-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(.4,0,.2,1);
+    }
+    .accordion-item.open .accordion-body { max-height: 500px; }
+    .accordion-content { padding: 20px 24px; font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+
+    /* ── Application Timeline ────────────────────────────────────── */
+    .timeline { position: relative; padding-left: 32px; }
+    .timeline::before {
+      content: ''; position: absolute; left: 8px; top: 0; bottom: 0;
+      width: 2px; background: linear-gradient(to bottom, var(--accent), var(--accent2), var(--accent3));
+    }
+    .timeline-item { position: relative; margin-bottom: 32px; }
+    .timeline-dot {
+      position: absolute; left: -28px; top: 4px;
+      width: 12px; height: 12px; border-radius: 50%;
+      border: 2px solid var(--bg);
+    }
+    .timeline-title { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+    .timeline-body { font-size: 0.88rem; color: var(--muted); }
+
+    /* ── Charts Section ─────────────────────────────────────────── */
+    .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    @media(max-width:750px){ .charts-grid{ grid-template-columns: 1fr; } }
+    .chart-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+    .chart-card h3 { font-size: 1rem; margin-bottom: 4px; }
+    .chart-card p { font-size: 0.82rem; color: var(--muted); margin-bottom: 16px; }
+
+    /* ── Sustainability Grid ─────────────────────────────────────── */
+    .sustain-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .sustain-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+    .sustain-icon { font-size: 2rem; margin-bottom: 12px; }
+    .sustain-title { font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
+    .sustain-text { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── Future Section ─────────────────────────────────────────── */
+    .future-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+    .future-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 28px; position: relative; overflow: hidden;
+    }
+    .future-card::after {
+      content: ''; position: absolute; top: 0; right: 0;
+      width: 80px; height: 80px; border-radius: 0 var(--radius) 0 80px;
+      opacity: 0.12;
+    }
+    .future-card:nth-child(1)::after { background: var(--accent); }
+    .future-card:nth-child(2)::after { background: var(--accent2); }
+    .future-card:nth-child(3)::after { background: var(--accent3); }
+    .future-num { font-size: 3rem; font-weight: 900; opacity: 0.08; line-height: 1; margin-bottom: -8px; }
+    .future-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; }
+    .future-text { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── Footer ─────────────────────────────────────────────────── */
+    footer {
+      background: var(--bg2); border-top: 1px solid var(--border);
+      padding: 48px 0 32px; text-align: center;
+    }
+    .footer-brand { font-size: 1.2rem; font-weight: 700; margin-bottom: 12px; }
+    .footer-text { color: var(--muted); font-size: 0.88rem; max-width: 500px; margin: 0 auto 24px; }
+    .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+    .footer-link {
+      color: var(--muted); text-decoration: none;
+      padding: 4px 10px; border-radius: 6px; font-size: 0.82rem;
+      transition: color var(--transition);
+    }
+    .footer-link:hover { color: var(--accent); }
+    .footer-copy { color: var(--muted); font-size: 0.78rem; margin-top: 28px; }
+
+    /* ── Responsive ─────────────────────────────────────────────── */
+    @media(max-width: 768px) {
+      .nav-links { display: none; position: fixed; top: 64px; left: 0; right: 0;
+        flex-direction: column; background: var(--bg2);
+        border-bottom: 1px solid var(--border); padding: 16px; gap: 4px;
+      }
+      .nav-links.open { display: flex; }
+      .nav-toggle { display: block; }
+      .section { padding: 56px 0; }
+      .process-grid { grid-template-columns: 1fr; }
+      .charts-grid { grid-template-columns: 1fr; }
+    }
+    @media(max-width: 480px) {
+      .tab-btn { padding: 8px 14px; font-size: 0.82rem; }
+    }
+
+    /* ── Progress indicator ─────────────────────────────────────── */
+    #progress-bar {
+      position: fixed; top: 0; left: 0; height: 3px; z-index: 2000;
+      background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+      width: 0%; transition: width 0.1s linear;
+    }
+
+    /* Smooth section reveal */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+  </style>
+</head>
+<body>
+
+<!-- Progress Bar -->
+<div id="progress-bar"></div>
+
+<!-- Navigation -->
+<nav>
+  <div class="container nav-inner">
+    <a class="nav-brand" href="#hero">⬡ MembraneScience</a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#processes">Processes</a></li>
+      <li><a href="#comparison">Compare</a></li>
+      <li><a href="#materials">Materials</a></li>
+      <li><a href="#applications">Applications</a></li>
+      <li><a href="#fouling">Fouling</a></li>
+      <li><a href="#economics">Economics</a></li>
+      <li><a href="#sustainability">Sustainability</a></li>
+      <li><a href="#future">Future</a></li>
+      <li><button class="theme-btn" id="theme-btn" title="Toggle theme">☾ Dark</button></li>
+    </ul>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">☰</button>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Advanced Biotechnology Analysis</div>
+    <h1 class="hero-title">
+      Pressure-Driven<br />
+      <span>Membrane Separation</span><br />
+      in Biotechnology
+    </h1>
+    <p class="hero-desc">
+      An interactive exploration of Reverse Osmosis, Microfiltration, Ultrafiltration,
+      and Dialysis — the molecular-level technologies transforming modern bioprocessing.
+    </p>
+    <div class="hero-chips">
+      <span class="hero-chip">🔬 Microfiltration</span>
+      <span class="hero-chip">⚗️ Ultrafiltration</span>
+      <span class="hero-chip">💧 Reverse Osmosis</span>
+      <span class="hero-chip">🧬 Dialysis</span>
+      <span class="hero-chip">🏭 Biopharmaceuticals</span>
+      <span class="hero-chip">🌱 Sustainability</span>
+    </div>
+    <a class="hero-cta" href="#processes">Explore the Science ↓</a>
+  </div>
+  <div class="scroll-hint">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    Scroll to discover
+  </div>
+</section>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <span class="stat-num" data-target="14000" data-suffix="+">0</span>
+        <span class="stat-label">Tonnes of membranes discarded/year</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" data-target="75" data-suffix="%">0</span>
+        <span class="stat-label">% Cost reduction vs evaporation (RO)</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" data-target="90" data-suffix="%">0</span>
+        <span class="stat-label">% Rejection rate (NF for succinate)</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" data-target="72" data-suffix="%">0</span>
+        <span class="stat-label">% Less CO₂ vs amine absorption</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num" data-target="17" data-suffix="×">0</span>
+        <span class="stat-label">× Better HCP clearance (functionalized filters)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Processes Section -->
+<section class="section" id="processes">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-title">Membrane Separation Processes</div>
+      <p class="section-sub">
+        Four primary technologies — each exploiting different transport mechanisms —
+        form the backbone of modern downstream bioprocessing. Select a process below to explore its fundamentals.
+      </p>
+    </div>
+
+    <!-- Pore size visualizer -->
+    <div class="pore-viz reveal">
+      <h3>📏 Membrane Pore Size Scale</h3>
+      <p>Interactive spectrum showing where each process operates — from macroscopic bacteria to dissolved ions.</p>
+      <div class="pore-scale">
+        <div class="pore-scale-track"></div>
+        <div class="pore-marker" style="left:5%"><span>10 µm</span></div>
+        <div class="pore-marker" style="left:20%"><span>0.1 µm</span></div>
+        <div class="pore-marker" style="left:50%"><span>1 nm</span></div>
+        <div class="pore-marker" style="left:80%"><span>&lt;0.1 nm</span></div>
+      </div>
+      <div class="pore-legend">
+        <div class="pore-legend-item"><div class="pore-dot" style="background:var(--accent4)"></div> Microfiltration (0.1–10 µm)</div>
+        <div class="pore-legend-item"><div class="pore-dot" style="background:var(--accent)"></div> Ultrafiltration (1–100 nm)</div>
+        <div class="pore-legend-item"><div class="pore-dot" style="background:var(--accent2)"></div> Nanofiltration / Dialysis (1–10 nm)</div>
+        <div class="pore-legend-item"><div class="pore-dot" style="background:var(--accent3)"></div> Reverse Osmosis (&lt;1 nm, dense)</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tab-bar reveal" style="margin-top:40px;">
+      <button class="tab-btn active" data-tab="mf">🦠 Microfiltration</button>
+      <button class="tab-btn" data-tab="uf">🔬 Ultrafiltration</button>
+      <button class="tab-btn" data-tab="ro">💧 Reverse Osmosis</button>
+      <button class="tab-btn" data-tab="dialysis">🩺 Dialysis</button>
+    </div>
+
+    <!-- MF -->
+    <div class="tab-panel active" id="tab-mf">
+      <div class="process-grid">
+        <div class="card">
+          <div class="process-header">
+            <div class="process-icon" style="background:rgba(255,107,107,0.1)">🦠</div>
+            <div>
+              <div class="process-title">Microfiltration</div>
+              <div class="process-sub">First-pass clarification & cell removal</div>
+            </div>
+          </div>
+          <p style="color:var(--muted);font-size:0.9rem;margin-bottom:20px;">
+            Microfiltration serves as the primary clarification stage in biotechnological downstream processing.
+            Membranes with pore sizes of 0.1–10 µm retain suspended particles, large colloids, and microbial cells
+            while allowing dissolved macromolecules and salts to pass via convective flow through micropores.
+          </p>
+          <ul class="spec-list">
+            <li><span class="spec-key">Pore Size</span><span class="spec-val">0.1 – 10 µm</span></li>
+            <li><span class="spec-key">Driving Force</span><span class="spec-val">Pressure (0.1 – 2 bar)</span></li>
+            <li><span class="spec-key">Mechanism</span><span class="spec-val">Size Exclusion / Convection</span></li>
+            <li><span class="spec-key">MWCO</span><span class="spec-val">&gt; 300 kDa</span></li>
+            <li><span class="spec-key">Targets</span><span class="spec-val">Bacteria, yeast, cell debris</span></li>
+            <li><span class="spec-key">Common Materials</span><span class="spec-val">PVDF, PTFE, PES</span></li>
+          </ul>
+          <div class="pressure-bar-wrap">
+            <div class="pressure-bar-label">Operating Pressure Intensity (relative to 80 bar max)</div>
+            <div class="pressure-bar-track"><div class="pressure-bar-fill" style="width:0%" data-width="2%"></div></div>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:20px;">
+            <h3 style="margin-bottom:12px;">Key Applications</h3>
+            <ul class="spec-list">
+              <li><span class="spec-key">Bioprocessing</span><span class="spec-val">Cell harvesting from fermentation broths</span></li>
+              <li><span class="spec-key">Dairy</span><span class="spec-val">Defatting milk, bacteria removal</span></li>
+              <li><span class="spec-key">Beverages</span><span class="spec-val">Cold sterilization of wine & beer</span></li>
+              <li><span class="spec-key">Water</span><span class="spec-val">Pretreatment for UF/RO systems</span></li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 style="margin-bottom:12px;">Advantages vs Centrifugation</h3>
+            <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;">
+              <li style="font-size:0.88rem;color:var(--muted)">✅ Eliminates harsh chemicals for flocculation</li>
+              <li style="font-size:0.88rem;color:var(--muted)">✅ Closed system — better containment</li>
+              <li style="font-size:0.88rem;color:var(--muted)">✅ Superior recovery rates for microorganisms</li>
+              <li style="font-size:0.88rem;color:var(--muted)">⚠️ Ineffective against viruses/small proteins</li>
+              <li style="font-size:0.88rem;color:var(--muted)">⚠️ Requires subsequent finer filtration stages</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- UF -->
+    <div class="tab-panel" id="tab-uf">
+      <div class="process-grid">
+        <div class="card">
+          <div class="process-header">
+            <div class="process-icon" style="background:rgba(0,200,255,0.1)">🔬</div>
+            <div>
+              <div class="process-title">Ultrafiltration</div>
+              <div class="process-sub">Molecular separation & concentration</div>
+            </div>
+          </div>
+          <p style="color:var(--muted);font-size:0.9rem;margin-bottom:20px;">
+            Ultrafiltration bridges the gap between MF and RO. Operating at 1–100 nm pore sizes with
+            MWCO of 1–1000 kDa, UF is ideal for concentrating and fractionating proteins, viruses, and
+            macromolecules. Asymmetric membranes with a thin "skin" layer optimize flux and selectivity.
+          </p>
+          <ul class="spec-list">
+            <li><span class="spec-key">Pore Size</span><span class="spec-val">1 – 100 nm</span></li>
+            <li><span class="spec-key">MWCO Range</span><span class="spec-val">1 – 1000 kDa</span></li>
+            <li><span class="spec-key">Driving Force</span><span class="spec-val">Pressure (1 – 5 bar)</span></li>
+            <li><span class="spec-key">Mechanism</span><span class="spec-val">Size Exclusion / Convection</span></li>
+            <li><span class="spec-key">Targets</span><span class="spec-val">Proteins, viruses, macromolecules</span></li>
+            <li><span class="spec-key">Common Materials</span><span class="spec-val">PES, PSf, regenerated cellulose</span></li>
+          </ul>
+          <div class="pressure-bar-wrap">
+            <div class="pressure-bar-label">Operating Pressure Intensity</div>
+            <div class="pressure-bar-track"><div class="pressure-bar-fill" style="width:0%" data-width="6%"></div></div>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:20px;">
+            <h3 style="margin-bottom:12px;">Diafiltration Integration</h3>
+            <p style="font-size:0.88rem;color:var(--muted);margin-bottom:12px;">
+              UF is frequently combined with diafiltration (DF), where fresh solvent is added to
+              the retentate to "wash out" low-MW contaminants such as salts, sugars, and buffer components —
+              achieving buffer exchange and desalting in a single unit operation.
+            </p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <span class="badge" style="background:rgba(0,200,255,0.1);color:var(--accent)">Buffer Exchange</span>
+              <span class="badge" style="background:rgba(0,229,160,0.1);color:var(--accent3)">Desalting</span>
+              <span class="badge" style="background:rgba(124,92,252,0.1);color:var(--accent2)">Protein Concentration</span>
+            </div>
+          </div>
+          <div class="card">
+            <h3 style="margin-bottom:12px;">Asymmetric Membrane Structure</h3>
+            <div style="background:var(--bg3);border-radius:10px;padding:16px;font-size:0.85rem;color:var(--muted);">
+              <div style="border-left:3px solid var(--accent);padding-left:12px;margin-bottom:10px;">
+                <strong style="color:var(--text)">Skin Layer (0.1–1 µm)</strong><br>
+                Thin, highly selective active layer facing the feed — provides selectivity.
+              </div>
+              <div style="border-left:3px solid var(--accent2);padding-left:12px;">
+                <strong style="color:var(--text)">Support Layer (100–200 µm)</strong><br>
+                Porous substructure — provides mechanical support and minimizes resistance.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RO -->
+    <div class="tab-panel" id="tab-ro">
+      <div class="process-grid">
+        <div class="card">
+          <div class="process-header">
+            <div class="process-icon" style="background:rgba(0,229,160,0.1)">💧</div>
+            <div>
+              <div class="process-title">Reverse Osmosis</div>
+              <div class="process-sub">Dense membrane, solution-diffusion mechanism</div>
+            </div>
+          </div>
+          <p style="color:var(--muted);font-size:0.9rem;margin-bottom:20px;">
+            RO represents the highest degree of separation among pressure-driven processes.
+            Using essentially non-porous membranes, it rejects virtually all dissolved salts
+            and organics &gt;100 g/mol. Water molecules dissolve into the dense polymer layer
+            and diffuse across it driven by hydraulic pressure exceeding osmotic pressure.
+          </p>
+          <ul class="spec-list">
+            <li><span class="spec-key">Pore Size</span><span class="spec-val">&lt; 1 nm (dense, non-porous)</span></li>
+            <li><span class="spec-key">Driving Force</span><span class="spec-val">Pressure (30 – 80 bar)</span></li>
+            <li><span class="spec-key">Mechanism</span><span class="spec-val">Solution-Diffusion</span></li>
+            <li><span class="spec-key">Salt Rejection</span><span class="spec-val">&gt; 99%</span></li>
+            <li><span class="spec-key">Targets</span><span class="spec-val">Salts, small organics, desalination</span></li>
+            <li><span class="spec-key">Common Materials</span><span class="spec-val">Aromatic polyamide TFC</span></li>
+          </ul>
+          <div class="pressure-bar-wrap">
+            <div class="pressure-bar-label">Operating Pressure Intensity</div>
+            <div class="pressure-bar-track"><div class="pressure-bar-fill" style="width:0%" data-width="100%"></div></div>
+          </div>
+        </div>
+        <div>
+          <div class="equation-card" style="margin-top:0;">
+            <h3 style="font-size:1rem;margin-bottom:8px;">The Solvent Flux Equation</h3>
+            <p style="color:var(--muted);font-size:0.82rem;margin-bottom:16px;">
+              The foundational equation describing transmembrane flux in RO:
+            </p>
+            <div class="equation-display">
+              \( J_v = A\,(\Delta P - \sigma \,\Delta\pi) \)
+            </div>
+            <div class="equation-vars">
+              <div class="var-item"><div class="var-sym">J<sub>v</sub></div><div class="var-desc">Volumetric flux (m³/m²·s)</div></div>
+              <div class="var-item"><div class="var-sym">A</div><div class="var-desc">Solvent permeability coefficient</div></div>
+              <div class="var-item"><div class="var-sym">ΔP</div><div class="var-desc">Applied transmembrane pressure</div></div>
+              <div class="var-item"><div class="var-sym">σ</div><div class="var-desc">Reflection coefficient (selectivity)</div></div>
+              <div class="var-item"><div class="var-sym">Δπ</div><div class="var-desc">Osmotic pressure difference</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Flux Simulator -->
+      <div class="simulator reveal">
+        <h3>🎛️ Interactive RO Flux Simulator</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+          <div>
+            <div class="slider-group">
+              <label>Applied Pressure ΔP (bar) <span id="dp-val">50</span></label>
+              <input type="range" id="dp-slider" min="30" max="80" value="50" step="1">
+            </div>
+            <div class="slider-group">
+              <label>Osmotic Pressure Δπ (bar) <span id="dpi-val">25</span></label>
+              <input type="range" id="dpi-slider" min="5" max="50" value="25" step="1">
+            </div>
+            <div class="slider-group">
+              <label>Permeability A (×10⁻¹²) <span id="a-val">3.5</span></label>
+              <input type="range" id="a-slider" min="1" max="10" value="3.5" step="0.5">
+            </div>
+          </div>
+          <div class="sim-result" style="flex-direction:column;align-items:flex-start;">
+            <div class="sim-label">Calculated Flux J<sub>v</sub></div>
+            <div class="sim-flux" id="sim-flux-val">87.5</div>
+            <div class="sim-label">× 10⁻⁶ m³/m²·s</div>
+            <div style="margin-top:16px;font-size:0.82rem;color:var(--muted);line-height:1.5;" id="sim-note">
+              ΔP &gt; Δπ: Reverse osmosis is occurring — net water flux toward permeate.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dialysis -->
+    <div class="tab-panel" id="tab-dialysis">
+      <div class="process-grid">
+        <div class="card">
+          <div class="process-header">
+            <div class="process-icon" style="background:rgba(124,92,252,0.1)">🩺</div>
+            <div>
+              <div class="process-title">Dialysis</div>
+              <div class="process-sub">Concentration-driven passive diffusion</div>
+            </div>
+          </div>
+          <p style="color:var(--muted);font-size:0.9rem;margin-bottom:20px;">
+            Dialysis differs fundamentally from pressure-driven processes by using a concentration
+            gradient as its driving force. Fine microporous membranes allow passage of small molecules
+            based on size, conformation, and charge while retaining macromolecules.
+            In hemodialysis, these membranes act as an artificial kidney.
+          </p>
+          <ul class="spec-list">
+            <li><span class="spec-key">Pore Size</span><span class="spec-val">1 – 10 nm</span></li>
+            <li><span class="spec-key">Driving Force</span><span class="spec-val">Concentration gradient</span></li>
+            <li><span class="spec-key">Mechanism</span><span class="spec-val">Passive diffusion</span></li>
+            <li><span class="spec-key">Targets</span><span class="spec-val">Ions, small metabolites, urea, creatinine</span></li>
+            <li><span class="spec-key">Speed</span><span class="spec-val">Slow (hours to days)</span></li>
+            <li><span class="spec-key">Scale</span><span class="spec-val">Lab-scale / medical</span></li>
+          </ul>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:20px;">
+            <h3 style="margin-bottom:12px;">Medical: Hemodialysis</h3>
+            <p style="font-size:0.88rem;color:var(--muted);margin-bottom:12px;">
+              Hemodialysis membranes function as an artificial kidney, removing uremic toxins
+              (urea, creatinine) and excess fluid from blood. Hollow-fiber module geometry
+              provides the high surface area required for adequate toxin clearance.
+            </p>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <span class="badge" style="background:rgba(124,92,252,0.1);color:var(--accent2)">Urea removal</span>
+              <span class="badge" style="background:rgba(124,92,252,0.1);color:var(--accent2)">Creatinine clearance</span>
+              <span class="badge" style="background:rgba(124,92,252,0.1);color:var(--accent2)">Fluid balance</span>
+            </div>
+          </div>
+          <div class="card">
+            <h3 style="margin-bottom:12px;">Dialysis vs Diafiltration</h3>
+            <div style="overflow-x:auto;">
+              <table style="width:100%;font-size:0.82rem;">
+                <thead><tr><th>Criterion</th><th>Dialysis</th><th>Diafiltration</th></tr></thead>
+                <tbody>
+                  <tr><td>Driving force</td><td>Concentration</td><td>Pressure</td></tr>
+                  <tr><td>Speed</td><td>Slow</td><td>Fast</td></tr>
+                  <tr><td>Scale</td><td>Lab / Medical</td><td>Industrial</td></tr>
+                  <tr><td>Protein stress</td><td>Minimal</td><td>Moderate</td></tr>
+                  <tr><td>Automation</td><td>Limited</td><td>Fully automatable</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Comparison Table -->
+<section class="section" id="comparison" style="background:var(--bg2);">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-title">Comparative Analysis</div>
+      <p class="section-sub">
+        Side-by-side comparison of all four membrane processes across key technical and operational parameters.
+      </p>
+    </div>
+    <div class="table-wrap reveal">
+      <table>
+        <thead>
+          <tr>
+            <th>Process</th>
+            <th>Typical Pore Size</th>
+            <th>Driving Force</th>
+            <th>Primary Mechanism</th>
+            <th>Pressure Range</th>
+            <th>Targeted Entities</th>
+            <th>Scale</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Microfiltration (MF)</strong></td>
+            <td>0.1 – 10 µm</td>
+            <td><span class="badge" style="background:rgba(255,107,107,0.15);color:var(--accent4)">Pressure</span></td>
+            <td>Size Exclusion / Convection</td>
+            <td>0.1 – 2 bar</td>
+            <td>Bacteria, yeast, cell debris</td>
+            <td><span class="badge" style="background:rgba(0,229,160,0.1);color:var(--accent3)">Industrial</span></td>
+          </tr>
+          <tr>
+            <td><strong>Ultrafiltration (UF)</strong></td>
+            <td>1 – 100 nm</td>
+            <td><span class="badge" style="background:rgba(255,107,107,0.15);color:var(--accent4)">Pressure</span></td>
+            <td>Size Exclusion / Convection</td>
+            <td>1 – 5 bar</td>
+            <td>Proteins, viruses, macromolecules</td>
+            <td><span class="badge" style="background:rgba(0,229,160,0.1);color:var(--accent3)">Industrial</span></td>
+          </tr>
+          <tr>
+            <td><strong>Reverse Osmosis (RO)</strong></td>
+            <td>&lt; 1 nm (dense)</td>
+            <td><span class="badge" style="background:rgba(255,107,107,0.15);color:var(--accent4)">Pressure</span></td>
+            <td>Solution-Diffusion</td>
+            <td>30 – 80 bar</td>
+            <td>Salts, small organic acids</td>
+            <td><span class="badge" style="background:rgba(0,229,160,0.1);color:var(--accent3)">Industrial</span></td>
+          </tr>
+          <tr>
+            <td><strong>Dialysis</strong></td>
+            <td>1 – 10 nm</td>
+            <td><span class="badge" style="background:rgba(0,200,255,0.15);color:var(--accent)">Concentration</span></td>
+            <td>Passive Diffusion</td>
+            <td>No pressure</td>
+            <td>Ions, metabolites, uremic toxins</td>
+            <td><span class="badge" style="background:rgba(124,92,252,0.1);color:var(--accent2)">Lab / Medical</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Materials Section -->
+<section class="section" id="materials">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-title">Membrane Materials & Fabrication</div>
+      <p class="section-sub">
+        From commodity polymers to cutting-edge nanocomposites — the material science driving
+        membrane performance. Click any card to expand details.
+      </p>
+    </div>
+    <div class="materials-grid reveal">
+      <div class="material-card" onclick="toggleMaterial(this)">
+        <div class="material-icon">🧪</div>
+        <div class="material-name">Polyethersulfone (PES) & Polysulfone (PSf)</div>
+        <div class="material-abbr">PES / PSf</div>
+        <div class="material-tags">
+          <span class="tag" style="background:rgba(0,200,255,0.1);color:var(--accent)">UF</span>
+          <span class="tag" style="background:rgba(124,92,252,0.1);color:var(--accent2)">High strength</span>
+        </div>
+        <div class="material-detail">
+          <p>Widely used in ultrafiltration for their high mechanical strength and thermal stability.
+          Inherently hydrophobic, increasing fouling susceptibility. Manufacturers incorporate
+          hydrophilic additives or surface coatings to enhance water flux and reduce protein adsorption.
+          PSf provides the support layer in most TFC RO membranes.</p>
+        </div>
+        <div class="expand-hint">↕ Click to expand</div>
+      </div>
+      <div class="material-card" onclick="toggleMaterial(this)">
+        <div class="material-icon">🛡️</div>
+        <div class="material-name">Polyvinylidene Fluoride (PVDF)</div>
+        <div class="material-abbr">PVDF</div>
+        <div class="material-tags">
+          <span class="tag" style="background:rgba(255,107,107,0.1);color:var(--accent4)">MF</span>
+          <span class="tag" style="background:rgba(0,229,160,0.1);color:var(--accent3)">Chemical resistant</span>
+        </div>
+        <div class="material-detail">
+          <p>Favored for microfiltration due to excellent chemical resistance to aggressive cleaning agents.
+          Can withstand harsh CIP protocols including sodium hypochlorite and caustic solutions.
+          Semi-crystalline structure provides good dimensional stability. Often surface-modified
+          to reduce hydrophobicity.</p>
+        </div>
+        <div class="expand-hint">↕ Click to expand</div>
+      </div>
+      <div class="material-card" onclick="toggleMaterial(this)">
+        <div class="material-icon">🏺</div>
+        <div class="material-name">Ceramic Membranes</div>
+        <div class="material-abbr">Al₂O₃ / TiO₂ / ZrO₂</div>
+        <div class="material-tags">
+          <span class="tag" style="background:rgba(255,107,107,0.1);color:var(--accent4)">MF</span>
+          <span class="tag" style="background:rgba(0,200,255,0.1);color:var(--accent)">UF</span>
+          <span class="tag" style="background:rgba(0,229,160,0.1);color:var(--accent3)">High temp</span>
+        </div>
+        <div class="material-detail">
+          <p>Fabricated from alumina, titania, or zirconia. Exceptional thermal stability (up to 800°C),
+          mechanical robustness, and chemical resistance across the full pH range (0–14). Allow aggressive
+          CIP using steam or harsh chemicals. Capital cost is 3–5× higher than polymeric alternatives.
+          Brittle and vulnerable to thermal shock.</p>
+        </div>
+        <div class="expand-hint">↕ Click to expand</div>
+      </div>
+      <div class="material-card" onclick="toggleMaterial(this)">
+        <div class="material-icon">⚡</div>
+        <div class="material-name">Thin-Film Composite (TFC)</div>
+        <div class="material-abbr">TFC — Aromatic Polyamide</div>
+        <div class="material-tags">
+          <span class="tag" style="background:rgba(0,229,160,0.1);color:var(--accent3)">RO</span>
+          <span class="tag" style="background:rgba(124,92,252,0.1);color:var(--accent2)">NF</span>
+          <span class="tag" style="background:rgba(0,200,255,0.1);color:var(--accent)">High rejection</span>
+        </div>
+        <div class="material-detail">
+          <p>Milestone in RO/NF efficiency. An extremely thin aromatic polyamide selective layer is
+          formed via interfacial polymerization on a porous PSf support. Allows independent optimization
+          of selectivity and support structure. Achieves &gt;99% salt rejection with high water flux.</p>
+        </div>
+        <div class="expand-hint">↕ Click to expand</div>
+      </div>
+      <div class="material-card" onclick="toggleMaterial(this)">
+        <div class="material-icon">🔮</div>
+        <div class="material-name">Thin-Film Nanocomposite (TFN)</div>
+        <div class="material-abbr">TFN — MOFs / CNTs / Graphene</div>
+        <div class="material-tags">
+          <span class="tag" style="background:rgba(255,107,107,0.1);color:var(--accent4)">Next-gen</span>
+          <span class="tag" style="background:rgba(0,229,160,0.1);color:var(--accent3)">Enhanced flux</span>
+        </div>
+        <div class="material-detail">
+          <p>Incorporates nanomaterials (carbon nanotubes, graphene oxide, MOFs) into the selective layer.
+          MOF-based TFN membranes (e.g., MIL-101(Cr)) create preferential solvent transport pathways,
+          significantly enhancing permeance. Highly effective for biomacromolecule separation in
+          aqueous and organic solvent environments.</p>
+        </div>
+        <div class="expand-hint">↕ Click to expand</div>
+      </div>
+      <div class="material-card" onclick="toggleMaterial(this)">
+        <div class="material-icon">🌿</div>
+        <div class="material-name">Biopolymer Membranes</div>
+        <div class="material-abbr">Chitosan / Cellulose / PHA</div>
+        <div class="material-tags">
+          <span class="tag" style="background:rgba(0,229,160,0.1);color:var(--accent3)">Sustainable</span>
+          <span class="tag" style="background:rgba(124,92,252,0.1);color:var(--accent2)">Renewable</span>
+        </div>
+        <div class="material-detail">
+          <p>Made from renewable resources — chitosan, cellulose derivatives, and polyhydroxyalkanoates.
+          Applications range from oil-water separation to pharmaceutical filtration. Fabricated using
+          green solvents (Cyrene, lactic acid esters) as replacements for toxic NMP/DMF.
+          Supports circular economy goals in membrane technology.</p>
+        </div>
+        <div class="expand-hint">↕ Click to expand</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Applications Timeline -->
+<section class="section" id="applications" style="background:var(--bg2);">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-title">Bioprocessing Applications</div>
+      <p class="section-sub">
+        From biopharmaceutical manufacturing to dairy valorization — membrane technology
+        underpins the entire modern bioeconomy.
+      </p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;">
+      <div class="reveal">
+        <h3 style="font-size:1.15rem;margin-bottom:24px;color:var(--accent)">🧬 Biopharmaceuticals & mAbs</h3>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot" style="background:var(--accent4)"></div>
+            <div class="timeline-title">1. Clarification</div>
+            <div class="timeline-body">Functionalized depth filters and quaternary amine-modified synthetic
+            filters achieve clarification and HCP clearance in a single step — up to 17× better than
+            conventional cellulose-based filters.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot" style="background:var(--accent)"></div>
+            <div class="timeline-title">2. Membrane Chromatography</div>
+            <div class="timeline-body">Membrane adsorbers in flow-through mode for polishing remove aggregates,
+            HCPs, and DNA with higher volumetric throughput due to convective mass transfer.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot" style="background:var(--accent2)"></div>
+            <div class="timeline-title">3. Ultrafiltration / Diafiltration</div>
+            <div class="timeline-body">Protein concentration and buffer exchange. SP-TFF enables continuous
+            concentration without recirculation tanks, achieving "straight-through" purification.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot" style="background:var(--accent3)"></div>
+            <div class="timeline-title">4. Viral Clearance</div>
+            <div class="timeline-body">Specialized UF membranes act as an absolute barrier for viral particles —
+            a critical regulatory requirement for all therapeutic proteins.</div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal">
+        <h3 style="font-size:1.15rem;margin-bottom:24px;color:var(--accent2)">🏭 Other Key Applications</h3>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div class="card" style="padding:20px;">
+            <div style="font-weight:700;margin-bottom:8px;">🥛 Dairy Industry</div>
+            <p style="font-size:0.85rem;color:var(--muted)">UF isolates whey protein concentrates (WPC/WPI).
+            UF-MILK is more efficient than UF-YOG for Greek yogurt production as post-fermentation UF causes
+            severe membrane fouling from the acidified protein matrix.</p>
+          </div>
+          <div class="card" style="padding:20px;">
+            <div style="font-weight:700;margin-bottom:8px;">🧫 Continuous Bioprocessing / VLP Vaccines</div>
+            <p style="font-size:0.85rem;color:var(--muted)">Integrated continuous downstream processes couple
+            flow-through chromatography with UF and periodic counter-current chromatography,
+            reducing facility footprint and batch-to-batch variation.</p>
+          </div>
+          <div class="card" style="padding:20px;">
+            <div style="font-weight:700;margin-bottom:8px;">⚗️ Organic Acid Recovery</div>
+            <p style="font-size:0.85rem;color:var(--muted)">NF membranes (e.g., polyimide P84) demonstrate
+            &gt;90% rejection of succinate from fermentation broths. Electrodialysis selectively transports
+            organic acid ions, with high recovery yields and low energy.</p>
+          </div>
+          <div class="card" style="padding:20px;">
+            <div style="font-weight:700;margin-bottom:8px;">🌊 Water Treatment / MBR</div>
+            <p style="font-size:0.85rem;color:var(--muted)">Membrane Bioreactors (MBRs) show significantly
+            lower global warming potential related to sludge removal compared to conventional
+            activated sludge processes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Fouling Section -->
+<section class="section" id="fouling">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-title">Fouling: Mechanisms & Mitigation</div>
+      <p class="section-sub">
+        Membrane fouling remains the single most significant obstacle to long-term efficiency.
+        Understanding fouling types is the first step to effective mitigation.
+      </p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;">
+      <div class="reveal">
+        <h3 style="font-size:1.05rem;margin-bottom:20px;color:var(--accent)">Types of Fouling</h3>
+        <div id="fouling-accordion">
+          <div class="accordion-item">
+            <button class="accordion-trigger">
+              <span style="display:flex;align-items:center;gap:12px;">
+                <span class="icon" style="background:rgba(255,107,107,0.15);color:var(--accent4)">🪨</span>
+                Particulate Fouling
+              </span>
+              <span class="accordion-arrow">▾</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                Accumulation of suspended solids and colloids on the membrane surface, typically
+                forming a cake layer. The cake layer increases hydraulic resistance and reduces flux.
+                Mitigation: backwashing, pre-filtration, coagulation/flocculation of feed.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-trigger">
+              <span style="display:flex;align-items:center;gap:12px;">
+                <span class="icon" style="background:rgba(0,200,255,0.15);color:var(--accent)">🧬</span>
+                Organic Fouling
+              </span>
+              <span class="accordion-arrow">▾</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                Adsorption of dissolved organic matter (proteins, humic substances) driven by
+                hydrophobic-hydrophobic interactions. BSA bridges with Ca²⁺ cations create dense
+                fouled layers. Operating at pH far from protein's isoelectric point (IEP) where
+                membrane and protein carry the same charge sign minimizes fouling.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-trigger">
+              <span style="display:flex;align-items:center;gap:12px;">
+                <span class="icon" style="background:rgba(0,229,160,0.15);color:var(--accent3)">🦠</span>
+                Biofouling
+              </span>
+              <span class="accordion-arrow">▾</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                Attachment and multiplication of microorganisms forming a resilient biofilm encased
+                in extracellular polymeric substances (EPS). EPS includes polysaccharides, proteins,
+                and nucleic acids that resist chemical cleaning. Biofouling is considered the most
+                difficult fouling type to remove and can cause catastrophic flux decline.
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-trigger">
+              <span style="display:flex;align-items:center;gap:12px;">
+                <span class="icon" style="background:rgba(124,92,252,0.15);color:var(--accent2)">⚗️</span>
+                Scaling (Inorganic Fouling)
+              </span>
+              <span class="accordion-arrow">▾</span>
+            </button>
+            <div class="accordion-body">
+              <div class="accordion-content">
+                Precipitation of salts (CaCO₃, BaSO₄, CaSO₄) when their concentration exceeds
+                solubility at the membrane surface — particularly dangerous in RO due to high concentration
+                polarization. Scaling reduces flux and can damage the membrane irreversibly.
+                Antiscalants and pH adjustment are primary prevention strategies.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal">
+        <h3 style="font-size:1.05rem;margin-bottom:20px;color:var(--accent2)">Mitigation Strategies</h3>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div class="card" style="padding:18px;display:flex;gap:14px;align-items:flex-start;">
+            <div style="font-size:1.4rem;flex-shrink:0;">💨</div>
+            <div>
+              <div style="font-weight:700;margin-bottom:6px;font-size:0.9rem;">Physical Methods</div>
+              <p style="font-size:0.83rem;color:var(--muted);">Backwashing, air scouring, and membrane relaxation
+              dislodge cake layers without chemicals. Increasing crossflow velocity (CFV) generates shear
+              forces that minimize concentration polarization at the membrane interface.</p>
+            </div>
+          </div>
+          <div class="card" style="padding:18px;display:flex;gap:14px;align-items:flex-start;">
+            <div style="font-size:1.4rem;flex-shrink:0;">🧴</div>
+            <div>
+              <div style="font-weight:700;margin-bottom:6px;font-size:0.9rem;">Chemical CIP</div>
+              <p style="font-size:0.83rem;color:var(--muted);">Regular Cleaning-in-Place using acids, bases,
+              or enzymatic detergents removes adsorbed foulants. Ceramic membranes tolerate
+              steam sterilization and bleach; polymeric membranes require milder protocols.</p>
+            </div>
+          </div>
+          <div class="card" style="padding:18px;display:flex;gap:14px;align-items:flex-start;">
+            <div style="font-size:1.4rem;flex-shrink:0;">⚡</div>
+            <div>
+              <div style="font-weight:700;margin-bottom:6px;font-size:0.9rem;">Zeta Potential Monitoring</div>
+              <p style="font-size:0.83rem;color:var(--muted);">High absolute zeta potential values indicate strong
+              electrostatic repulsion. Monitoring changes in surface charge is a recognized early detection
+              method for fouling and evaluates cleaning protocol effectiveness.</p>
+            </div>
+          </div>
+          <div class="card" style="padding:18px;display:flex;gap:14px;align-items:flex-start;">
+            <div style="font-size:1.4rem;flex-shrink:0;">🤖</div>
+            <div>
+              <div style="font-weight:700;margin-bottom:6px;font-size:0.9rem;">AI-Powered Predictive Modeling</div>
+              <p style="font-size:0.83rem;color:var(--muted);">Artificial Neural Networks (ANNs) trained on
+              historical data predict fouling rates and optimize cleaning frequencies. Digital Twins enable
+              autonomous control for real-time fouling management.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Economics Section -->
+<section class="section" id="economics" style="background:var(--bg2);">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-title">Technoeconomic Analysis</div>
+      <p class="section-sub">
+        Quantitative comparison of membrane processes against traditional thermal separation methods —
+        demonstrating clear economic and environmental advantages.
+      </p>
+    </div>
+    <div class="charts-grid reveal">
+      <div class="chart-card">
+        <h3>Energy Cost Comparison</h3>
+        <p>Operating cost per m³ of water removed — RO vs evaporation alternatives</p>
+        <canvas id="cost-chart" height="220"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Pressure Operating Ranges</h3>
+        <p>Bar pressure ranges for each membrane separation process</p>
+        <canvas id="pressure-chart" height="220"></canvas>
+      </div>
+    </div>
+    <div class="charts-grid reveal" style="margin-top:28px;">
+      <div class="chart-card">
+        <h3>CO₂ Reduction Potential</h3>
+        <p>Membrane processes vs conventional thermal/chemical alternatives (% reduction)</p>
+        <canvas id="co2-chart" height="220"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Membrane MWCO Spectrum</h3>
+        <p>Molecular weight cut-off (kDa) ranges for UF membrane applications</p>
+        <canvas id="mwco-chart" height="220"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sustainability -->
+<section class="section" id="sustainability">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-title">Sustainability & Circular Economy</div>
+      <p class="section-sub">
+        ~14,000 tonnes of membranes are discarded globally each year.
+        Innovative strategies are transforming end-of-life membranes into resources.
+      </p>
+    </div>
+    <div class="sustain-grid reveal">
+      <div class="sustain-card">
+        <div class="sustain-icon">♻️</div>
+        <div class="sustain-title">Downcycling</div>
+        <div class="sustain-text">Retired RO membranes treated with sodium hypochlorite to remove the fouled
+        polyamide layer, transforming them into recycled NF or UF membranes for lower-stringency applications
+        like wastewater pretreatment.</div>
+      </div>
+      <div class="sustain-card">
+        <div class="sustain-icon">⬆️</div>
+        <div class="sustain-title">Upcycling</div>
+        <div class="sustain-text">Converting retired MF or UF membranes into high-performance NF/RO membranes
+        through surface functionalization and interfacial polymerization — adding value to
+        end-of-life materials.</div>
+      </div>
+      <div class="sustain-card">
+        <div class="sustain-icon">🔄</div>
+        <div class="sustain-title">Covalent Adaptable Networks (CANs)</div>
+        <div class="sustain-text">Advanced thermoset polymers with dynamic covalent bonds allow depolymerization
+        and reprocessing at end-of-life — enabling true closed-loop recycling of membrane materials.</div>
+      </div>
+      <div class="sustain-card">
+        <div class="sustain-icon">🌿</div>
+        <div class="sustain-title">Green Solvents</div>
+        <div class="sustain-text">Bio-based solvents Cyrene (dihydrolevoglucosenone) and lactic acid esters
+        replace toxic NMP and DMF in membrane fabrication, reducing hazardous waste
+        throughout the manufacturing process.</div>
+      </div>
+      <div class="sustain-card">
+        <div class="sustain-icon">🔧</div>
+        <div class="sustain-title">Mechanosynthesis</div>
+        <div class="sustain-text">Solvent-free synthesis of membrane building blocks (MOFs, COFs) using mechanical
+        energy (grinding, shearing) — drastically reducing chemical reagent use compared to
+        conventional solvothermal methods.</div>
+      </div>
+      <div class="sustain-card">
+        <div class="sustain-icon">🌾</div>
+        <div class="sustain-title">Biopolymer Membranes</div>
+        <div class="sustain-text">Chitosan, cellulose derivatives, and polyhydroxyalkanoates from renewable
+        sources replace petroleum-derived polymers, reducing the environmental footprint of the
+        membrane lifecycle from cradle to grave.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Future Section -->
+<section class="section" id="future" style="background:var(--bg2);">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-title">Future Directions</div>
+      <p class="section-sub">
+        The convergence of biology, nanotechnology, and digital intelligence is defining
+        the next generation of membrane separation systems.
+      </p>
+    </div>
+    <div class="future-grid reveal">
+      <div class="future-card">
+        <div class="future-num">01</div>
+        <div class="future-title">🧬 Biomimetic Membranes & Aquaporins</div>
+        <div class="future-text">
+          Incorporating Aquaporin water channel proteins into synthetic polymer matrices could
+          revolutionize desalination and resource recovery, achieving theoretical water fluxes
+          far exceeding current TFC membranes while maintaining near-perfect ion rejection.
+          These biological transport proteins selectively allow water passage while excluding
+          ions and other solutes.
+        </div>
+      </div>
+      <div class="future-card">
+        <div class="future-num">02</div>
+        <div class="future-title">🤖 AI & Digital Twins</div>
+        <div class="future-text">
+          Digital Twins combined with Process Analytical Technology (PAT) enable real-time
+          monitoring and autonomous control of membrane systems. Chemometric modeling and
+          predictive analytics support "real-time release" (RTR) of products, maximizing
+          cleaning efficiency and ensuring consistent quality in fully automated continuous
+          biomanufacturing.
+        </div>
+      </div>
+      <div class="future-card">
+        <div class="future-num">03</div>
+        <div class="future-title">💎 Advanced Nanocomposites</div>
+        <div class="future-text">
+          MOF-integrated TFN membranes, graphene oxide barriers, and carbon nanotube-enhanced
+          composites continue to push the boundaries of permeance and selectivity. These materials
+          create engineered transport pathways at the sub-nanometer scale, enabling separations
+          not achievable with conventional polymeric materials.
+        </div>
+      </div>
+    </div>
+
+    <!-- Hollow fiber manufacturing -->
+    <div class="reveal" style="margin-top:48px;">
+      <h3 style="font-size:1.15rem;margin-bottom:24px;">🏭 Hollow Fiber Manufacturing Technologies</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;">
+        <div class="card">
+          <div style="font-size:1.5rem;margin-bottom:10px;">🔥</div>
+          <div style="font-weight:700;margin-bottom:8px;">Melt Spinning</div>
+          <p style="font-size:0.85rem;color:var(--muted);">Polymer heated above melting point and extruded through
+          a spinneret, followed by immediate cooling. Produces dense, mechanically strong fibers without solvents.</p>
+        </div>
+        <div class="card">
+          <div style="font-size:1.5rem;margin-bottom:10px;">💨</div>
+          <div style="font-weight:700;margin-bottom:8px;">Dry Spinning</div>
+          <p style="font-size:0.85rem;color:var(--muted);">Polymer dissolved in volatile solvent; after extrusion,
+          solvent evaporates using heat, causing solidification. Creates asymmetric pore structures.</p>
+        </div>
+        <div class="card">
+          <div style="font-size:1.5rem;margin-bottom:10px;">💧</div>
+          <div style="font-weight:700;margin-bottom:8px;">Wet Spinning</div>
+          <p style="font-size:0.85rem;color:var(--muted);">Polymer solution extruded into non-solvent bath where
+          phase inversion occurs. Often involves an air gap to control membrane morphology and pore size.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-brand">⬡ Membrane Separation in Biotechnology</div>
+    <div class="footer-text">
+      A comprehensive scientific overview of pressure-driven and concentration-driven membrane
+      separation processes and their critical role in modern biotechnology and biopharmaceutical manufacturing.
+    </div>
+    <div class="footer-links">
+      <a class="footer-link" href="#hero">Overview</a>
+      <a class="footer-link" href="#processes">Processes</a>
+      <a class="footer-link" href="#comparison">Comparison</a>
+      <a class="footer-link" href="#materials">Materials</a>
+      <a class="footer-link" href="#applications">Applications</a>
+      <a class="footer-link" href="#fouling">Fouling</a>
+      <a class="footer-link" href="#economics">Economics</a>
+      <a class="footer-link" href="#sustainability">Sustainability</a>
+      <a class="footer-link" href="#future">Future</a>
+    </div>
+    <div class="footer-copy">
+      Advanced Analysis of Pressure-Driven Membrane Separation Processes · Biotechnology Reference
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ─── Theme Toggle ──────────────────────────────────────── */
+const themeBtn = document.getElementById('theme-btn');
+themeBtn.addEventListener('click', () => {
+  const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+  document.documentElement.setAttribute('data-theme', isLight ? '' : 'light');
+  themeBtn.textContent = isLight ? '☾ Dark' : '☀ Light';
+});
+
+/* ─── Mobile Nav Toggle ─────────────────────────────────── */
+document.getElementById('nav-toggle').addEventListener('click', () => {
+  document.getElementById('nav-links').classList.toggle('open');
+});
+
+/* ─── Scroll Progress Bar ───────────────────────────────── */
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);
+  document.getElementById('progress-bar').style.width = (scrolled * 100) + '%';
+});
+
+/* ─── Hero Canvas Animation ─────────────────────────────── */
+(function () {
+  const canvas = document.getElementById('hero-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [], animId;
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function Particle() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.r = Math.random() * 2 + 0.5;
+    this.vx = (Math.random() - 0.5) * 0.4;
+    this.vy = (Math.random() - 0.5) * 0.4;
+    this.alpha = Math.random() * 0.4 + 0.1;
+    this.color = Math.random() > 0.5 ? '#00c8ff' : '#7c5cfc';
+  }
+
+  for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach((p, i) => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = p.alpha;
+      ctx.fill();
+      // Draw connection lines
+      for (let j = i + 1; j < particles.length; j++) {
+        const q = particles[j];
+        const dx = p.x - q.x, dy = p.y - q.y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if (d < 100) {
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          ctx.strokeStyle = p.color;
+          ctx.globalAlpha = (1 - d / 100) * 0.12;
+          ctx.lineWidth = 0.7;
+          ctx.stroke();
+        }
+      }
+    });
+    ctx.globalAlpha = 1;
+    animId = requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* ─── Tabs ──────────────────────────────────────────────── */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    // Animate pressure bars in new tab
+    animatePressureBars();
+  });
+});
+
+function animatePressureBars() {
+  document.querySelectorAll('.tab-panel.active .pressure-bar-fill').forEach(el => {
+    el.style.width = el.dataset.width;
+  });
+}
+// Trigger on page load after a delay
+setTimeout(animatePressureBars, 600);
+
+/* ─── Accordion ─────────────────────────────────────────── */
+document.querySelectorAll('.accordion-trigger').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.parentElement;
+    const wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+    if (!wasOpen) item.classList.add('open');
+  });
+});
+
+/* ─── Material Card Toggle ─────────────────────────────── */
+function toggleMaterial(card) {
+  card.classList.toggle('expanded');
+}
+
+/* ─── Stats Counter Animation ──────────────────────────── */
+function animateCounter(el, target) {
+  let start = 0, step = Math.ceil(target / 60);
+  const suffix = el.dataset.suffix || '';
+  const timer = setInterval(() => {
+    start = Math.min(start + step, target);
+    el.textContent = start.toLocaleString() + suffix;
+    if (start >= target) clearInterval(timer);
+  }, 16);
+}
+
+/* ─── Intersection Observer ─────────────────────────────── */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      // Trigger counter animation
+      if (entry.target.dataset.target) {
+        animateCounter(entry.target, parseInt(entry.target.dataset.target));
+      }
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal, [data-target]').forEach(el => observer.observe(el));
+
+/* ─── RO Flux Simulator ─────────────────────────────────── */
+const dpSlider = document.getElementById('dp-slider');
+const dpiSlider = document.getElementById('dpi-slider');
+const aSlider = document.getElementById('a-slider');
+
+function updateSim() {
+  const dp = parseFloat(dpSlider.value);
+  const dpi = parseFloat(dpiSlider.value);
+  const A = parseFloat(aSlider.value);
+  document.getElementById('dp-val').textContent = dp;
+  document.getElementById('dpi-val').textContent = dpi;
+  document.getElementById('a-val').textContent = A;
+  const jv = Math.max(0, A * (dp - dpi)).toFixed(1);
+  document.getElementById('sim-flux-val').textContent = jv;
+  const note = dp > dpi
+    ? 'ΔP > Δπ: Reverse osmosis is occurring — net water flux toward permeate.'
+    : dp === dpi
+    ? 'ΔP = Δπ: System at osmotic equilibrium — zero net flux.'
+    : 'ΔP < Δπ: Natural osmosis regime — water flows against pressure gradient.';
+  document.getElementById('sim-note').textContent = note;
+}
+
+if (dpSlider) {
+  [dpSlider, dpiSlider, aSlider].forEach(s => s.addEventListener('input', updateSim));
+  updateSim();
+}
+
+/* ─── Charts ────────────────────────────────────────────── */
+const isDark = () => document.documentElement.getAttribute('data-theme') !== 'light';
+const gridColor = () => isDark() ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)';
+const labelColor = () => isDark() ? '#94a3b8' : '#475569';
+
+// Cost comparison chart
+const costCtx = document.getElementById('cost-chart');
+if (costCtx) {
+  new Chart(costCtx, {
+    type: 'bar',
+    data: {
+      labels: ['Reverse Osmosis', '3-Effect Evaporator', '5-Effect + TVR'],
+      datasets: [{
+        label: '€ per m³ water removed',
+        data: [0.618, 3.655, 2.04],
+        backgroundColor: ['rgba(0,229,160,0.7)', 'rgba(255,107,107,0.7)', 'rgba(124,92,252,0.7)'],
+        borderColor: ['#00e5a0', '#ff6b6b', '#7c5cfc'],
+        borderWidth: 2, borderRadius: 6
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: {
+          grid: { color: gridColor() },
+          ticks: { color: labelColor(), callback: v => '€' + v }
+        },
+        x: { grid: { display: false }, ticks: { color: labelColor() } }
+      }
+    }
+  });
+}
+
+// Pressure ranges chart
+const pressCtx = document.getElementById('pressure-chart');
+if (pressCtx) {
+  new Chart(pressCtx, {
+    type: 'bar',
+    data: {
+      labels: ['MF', 'UF', 'Dialysis', 'RO'],
+      datasets: [
+        {
+          label: 'Min (bar)', data: [0.1, 1, 0, 30],
+          backgroundColor: 'rgba(0,200,255,0.3)', borderColor: '#00c8ff', borderWidth: 1
+        },
+        {
+          label: 'Max (bar)', data: [2, 5, 0, 80],
+          backgroundColor: 'rgba(124,92,252,0.5)', borderColor: '#7c5cfc', borderWidth: 2, borderRadius: 4
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: labelColor() } } },
+      scales: {
+        y: {
+          grid: { color: gridColor() },
+          ticks: { color: labelColor(), callback: v => v + ' bar' }
+        },
+        x: { grid: { display: false }, ticks: { color: labelColor() } }
+      }
+    }
+  });
+}
+
+// CO2 reduction chart
+const co2Ctx = document.getElementById('co2-chart');
+if (co2Ctx) {
+  new Chart(co2Ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['MEEP vs Amine Absorption (low)', 'MEEP vs Amine Absorption (high)', 'MBR vs CAS (sludge GWP)', 'RO vs 3-Effect Evaporation'],
+      datasets: [{
+        data: [34, 72, 45, 75],
+        backgroundColor: ['rgba(0,200,255,0.7)', 'rgba(0,229,160,0.7)', 'rgba(124,92,252,0.7)', 'rgba(255,107,107,0.7)'],
+        borderColor: ['#00c8ff', '#00e5a0', '#7c5cfc', '#ff6b6b'],
+        borderWidth: 2
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { color: labelColor(), font: { size: 10 } } },
+        tooltip: { callbacks: { label: ctx => ctx.label + ': ' + ctx.parsed + '% reduction' } }
+      }
+    }
+  });
+}
+
+// MWCO spectrum chart
+const mwcoCtx = document.getElementById('mwco-chart');
+if (mwcoCtx) {
+  new Chart(mwcoCtx, {
+    type: 'bar',
+    data: {
+      labels: ['IgG (150 kDa)', 'Albumin (67 kDa)', 'Insulin (5.8 kDa)', 'Vitamin B12 (1.4 kDa)', 'NaCl (0.058 kDa)'],
+      datasets: [{
+        label: 'Molecular Weight (kDa)',
+        data: [150, 67, 5.8, 1.4, 0.058],
+        backgroundColor: ['rgba(0,200,255,0.7)', 'rgba(0,229,160,0.7)', 'rgba(124,92,252,0.7)', 'rgba(255,107,107,0.7)', 'rgba(255,200,0,0.7)'],
+        borderRadius: 6
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: {
+          type: 'logarithmic',
+          grid: { color: gridColor() },
+          ticks: { color: labelColor(), callback: v => v + ' kDa' }
+        },
+        y: { grid: { display: false }, ticks: { color: labelColor() } }
+      }
+    }
+  });
+}
+</script>
+</body>
+</html>
