@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filtration &amp; Separation in Biotechnology</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' };
+    </script>
+    <style>
+        /* Progress bar */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #0F766E, #06B6D4);
+            z-index: 9999;
+            transition: width 0.1s ease;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body { transition: background-color 0.3s ease, color 0.3s ease; }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container { height: 400px; }
+        }
+
+        /* Tabs */
+        .tab-active {
+            border-bottom: 4px solid #0F766E;
+            color: #0F766E;
+            font-weight: 600;
+        }
+        .dark .tab-active {
+            border-bottom-color: #2DD4BF;
+            color: #2DD4BF;
+        }
+        .tab-inactive {
+            border-bottom: 4px solid transparent;
+            color: #78716C;
+        }
+        .dark .tab-inactive { color: #A8A29E; }
+
+        /* Process card hover */
+        .process-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .process-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #F5F5F4; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #D6D3D1; border-radius: 4px; }
+
+        /* Stat card gradient */
+        .stat-card {
+            background: linear-gradient(135deg, rgba(15, 118, 110, 0.08), rgba(6, 182, 212, 0.08));
+            border: 1px solid rgba(15, 118, 110, 0.15);
+        }
+        .dark .stat-card {
+            background: linear-gradient(135deg, rgba(15, 118, 110, 0.18), rgba(6, 182, 212, 0.18));
+            border-color: rgba(15, 118, 110, 0.3);
+        }
+
+        /* Fade-in on scroll */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Range input accent */
+        input[type=range] { accent-color: #0D9488; }
+    </style>
+</head>
+<body class="bg-gray-50 text-stone-800 font-sans antialiased overflow-x-hidden dark:bg-stone-900 dark:text-stone-200">
+
+    <!-- Progress Bar -->
+    <div id="progress-bar" style="width: 0%"></div>
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="sticky top-0 z-50 bg-white/90 dark:bg-stone-800/90 backdrop-blur-sm shadow-sm px-4 py-3 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <div class="text-xl font-bold text-teal-700 dark:text-teal-400">⚗️ BioMembrane</div>
+            <div class="hidden sm:block text-sm text-stone-500 dark:text-stone-400 font-medium">Separation Processes</div>
+        </div>
+        <div class="flex items-center gap-3">
+            <div class="hidden md:flex items-center gap-5 text-sm font-medium text-stone-600 dark:text-stone-300">
+                <a href="#overview" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">Overview</a>
+                <a href="#explorer" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">Explorer</a>
+                <a href="#analytics" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">Analytics</a>
+                <a href="#applications" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">Applications</a>
+                <a href="#simulator" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">Simulator</a>
+                <a href="#future" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">Future</a>
+            </div>
+            <button id="theme-toggle"
+                class="p-2 rounded-full bg-stone-100 dark:bg-stone-700 text-stone-600 dark:text-stone-300 hover:bg-stone-200 dark:hover:bg-stone-600 transition-colors"
+                aria-label="Toggle theme">
+                <span id="theme-icon">🌙</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== SLIDE 1: HERO ===== -->
+    <section id="hero" class="scroll-mt-16">
+        <header class="max-w-5xl mx-auto px-6 pt-20 pb-16 text-center">
+            <div class="inline-block px-4 py-2 bg-teal-50 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 rounded-full text-sm font-semibold mb-6 tracking-wide uppercase">
+                Biotechnology Fundamentals
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-stone-900 dark:text-white mb-6 leading-tight">
+                Filtration &amp; Separation in <span class="text-teal-700 dark:text-teal-400">Biotechnology</span>
+            </h1>
+            <p class="text-lg md:text-xl text-stone-600 dark:text-stone-300 max-w-3xl mx-auto leading-relaxed mb-10">
+                A comprehensive overview of pressure-driven and diffusion-based membrane separation processes—Reverse Osmosis (RO),
+                Microfiltration (MF), Ultrafiltration (UF), and Dialysis—in modern bioprocessing.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#overview"
+                    class="px-8 py-3 bg-teal-700 text-white rounded-full font-semibold hover:bg-teal-800 transition-colors shadow-md">
+                    Explore Processes ↓
+                </a>
+                <a href="#simulator"
+                    class="px-8 py-3 bg-white dark:bg-stone-700 text-stone-700 dark:text-stone-200 border border-stone-200 dark:border-stone-600 rounded-full font-semibold hover:bg-stone-50 dark:hover:bg-stone-600 transition-colors shadow-sm">
+                    Try RO Simulator
+                </a>
+            </div>
+        </header>
+    </section>
+
+    <!-- ===== SLIDE 2: STATISTICS BAR ===== -->
+    <section class="bg-white dark:bg-stone-800 border-y border-stone-200 dark:border-stone-700 py-12">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="stat-card p-6 rounded-xl text-center">
+                    <div class="text-3xl font-extrabold text-teal-700 dark:text-teal-400 mb-1">4</div>
+                    <div class="text-sm text-stone-600 dark:text-stone-400 font-medium">Key Processes</div>
+                </div>
+                <div class="stat-card p-6 rounded-xl text-center">
+                    <div class="text-2xl font-extrabold text-teal-700 dark:text-teal-400 mb-1">0.0001–10 µm</div>
+                    <div class="text-sm text-stone-600 dark:text-stone-400 font-medium">Pore Size Range</div>
+                </div>
+                <div class="stat-card p-6 rounded-xl text-center">
+                    <div class="text-3xl font-extrabold text-teal-700 dark:text-teal-400 mb-1">80+ bar</div>
+                    <div class="text-sm text-stone-600 dark:text-stone-400 font-medium">Max RO Pressure</div>
+                </div>
+                <div class="stat-card p-6 rounded-xl text-center">
+                    <div class="text-3xl font-extrabold text-teal-700 dark:text-teal-400 mb-1">&gt;99%</div>
+                    <div class="text-sm text-stone-600 dark:text-stone-400 font-medium">Ion Rejection (RO)</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="max-w-6xl mx-auto px-6 pb-24 space-y-24">
+
+        <!-- ===== SLIDE 3: PROCESSES OVERVIEW WITH PORE SIZE VISUALIZATION ===== -->
+        <section id="overview" class="scroll-mt-24 pt-12 fade-in">
+            <div class="mb-10 text-center max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-stone-900 dark:text-white mb-3">Separation Process Overview</h2>
+                <p class="text-stone-600 dark:text-stone-400">Four membrane technologies spanning six orders of magnitude in pore size,
+                    each targeting a specific range of biological species.</p>
+            </div>
+
+            <div class="bg-white dark:bg-stone-800 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700 p-8">
+                <h3 class="text-lg font-bold text-stone-800 dark:text-white mb-6 text-center">Pore Size &amp; Separation Spectrum</h3>
+
+                <!-- Visual spectrum bar -->
+                <div class="relative mb-8">
+                    <div class="flex h-10 rounded-full overflow-hidden">
+                        <div class="flex-none w-1/4 bg-sky-300 dark:bg-sky-600 flex items-center justify-center text-xs font-bold text-sky-900 dark:text-white">RO</div>
+                        <div class="flex-none w-1/4 bg-teal-300 dark:bg-teal-600 flex items-center justify-center text-xs font-bold text-teal-900 dark:text-white">Dialysis</div>
+                        <div class="flex-none w-1/4 bg-emerald-300 dark:bg-emerald-600 flex items-center justify-center text-xs font-bold text-emerald-900 dark:text-white">UF</div>
+                        <div class="flex-none w-1/4 bg-lime-300 dark:bg-lime-600 flex items-center justify-center text-xs font-bold text-lime-900 dark:text-white">MF</div>
+                    </div>
+                    <div class="flex justify-between text-xs text-stone-500 dark:text-stone-400 mt-2 px-1">
+                        <span>0.0001 µm</span>
+                        <span>0.001 µm</span>
+                        <span>0.01 µm</span>
+                        <span>0.1 µm</span>
+                        <span>1 µm</span>
+                        <span>10 µm</span>
+                    </div>
+                </div>
+
+                <!-- What each process retains -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="p-4 bg-sky-50 dark:bg-sky-900/30 rounded-xl border border-sky-100 dark:border-sky-800">
+                        <div class="text-sky-700 dark:text-sky-300 font-bold text-sm mb-2">Reverse Osmosis</div>
+                        <div class="text-xs text-stone-600 dark:text-stone-400 mb-1"><strong>Retains:</strong> Ions, Salts, Sugars, Small organics</div>
+                        <div class="text-xs text-stone-500 dark:text-stone-500"><strong>Passes:</strong> Water only</div>
+                    </div>
+                    <div class="p-4 bg-teal-50 dark:bg-teal-900/30 rounded-xl border border-teal-100 dark:border-teal-800">
+                        <div class="text-teal-700 dark:text-teal-300 font-bold text-sm mb-2">Dialysis</div>
+                        <div class="text-xs text-stone-600 dark:text-stone-400 mb-1"><strong>Retains:</strong> Proteins, Macromolecules</div>
+                        <div class="text-xs text-stone-500 dark:text-stone-500"><strong>Passes:</strong> Buffer ions, small salts</div>
+                    </div>
+                    <div class="p-4 bg-emerald-50 dark:bg-emerald-900/30 rounded-xl border border-emerald-100 dark:border-emerald-800">
+                        <div class="text-emerald-700 dark:text-emerald-300 font-bold text-sm mb-2">Ultrafiltration</div>
+                        <div class="text-xs text-stone-600 dark:text-stone-400 mb-1"><strong>Retains:</strong> Proteins, Viruses, Endotoxins</div>
+                        <div class="text-xs text-stone-500 dark:text-stone-500"><strong>Passes:</strong> Salts, water</div>
+                    </div>
+                    <div class="p-4 bg-lime-50 dark:bg-lime-900/30 rounded-xl border border-lime-100 dark:border-lime-800">
+                        <div class="text-lime-700 dark:text-lime-300 font-bold text-sm mb-2">Microfiltration</div>
+                        <div class="text-xs text-stone-600 dark:text-stone-400 mb-1"><strong>Retains:</strong> Cells, Bacteria, Large colloids</div>
+                        <div class="text-xs text-stone-500 dark:text-stone-500"><strong>Passes:</strong> Proteins, salts, water</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SLIDES 4–7: INDIVIDUAL PROCESS CARDS (TABBED EXPLORER) ===== -->
+        <section id="explorer" class="scroll-mt-24 fade-in">
+            <div class="mb-8 text-center max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-stone-900 dark:text-white mb-3">Membrane Technology Explorer</h2>
+                <p class="text-stone-600 dark:text-stone-400">Select a process to investigate its operating principles,
+                    physical constraints, and primary biotech functions.</p>
+            </div>
+
+            <div class="bg-white dark:bg-stone-800 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700 overflow-hidden">
+                <!-- Tab buttons -->
+                <div class="flex flex-wrap border-b border-stone-200 dark:border-stone-700 bg-stone-50 dark:bg-stone-900" id="tab-container">
+                    <button class="flex-1 py-4 px-4 text-center font-medium tab-active transition-colors duration-200 hover:bg-stone-100 dark:hover:bg-stone-700 text-sm md:text-base"
+                        data-target="mf">Microfiltration (MF)</button>
+                    <button class="flex-1 py-4 px-4 text-center font-medium tab-inactive transition-colors duration-200 hover:bg-stone-100 dark:hover:bg-stone-700 text-sm md:text-base"
+                        data-target="uf">Ultrafiltration (UF)</button>
+                    <button class="flex-1 py-4 px-4 text-center font-medium tab-inactive transition-colors duration-200 hover:bg-stone-100 dark:hover:bg-stone-700 text-sm md:text-base"
+                        data-target="ro">Reverse Osmosis (RO)</button>
+                    <button class="flex-1 py-4 px-4 text-center font-medium tab-inactive transition-colors duration-200 hover:bg-stone-100 dark:hover:bg-stone-700 text-sm md:text-base"
+                        data-target="dialysis">Dialysis</button>
+                </div>
+
+                <!-- Tab panel -->
+                <div class="p-8 md:p-12 min-h-[420px] flex flex-col md:flex-row gap-8 items-start md:items-center">
+                    <div class="flex-1 space-y-6">
+                        <div class="inline-block px-3 py-1 bg-teal-50 dark:bg-teal-900/50 text-teal-700 dark:text-teal-300 rounded-full text-sm font-bold tracking-wider uppercase"
+                            id="panel-badge">Low Pressure</div>
+                        <h3 class="text-3xl font-bold text-stone-900 dark:text-white" id="panel-title">Microfiltration (MF)</h3>
+                        <p class="text-stone-600 dark:text-stone-400 text-lg leading-relaxed" id="panel-desc">
+                            Microfiltration operates at low pressure to separate suspended particles, large colloids, and cells from
+                            dissolved solutes. It acts as a physical sieve, making it the standard for initial clarification steps.
+                        </p>
+                        <div class="grid grid-cols-2 gap-4 pt-4 border-t border-stone-100 dark:border-stone-700">
+                            <div>
+                                <div class="text-sm text-stone-500 uppercase tracking-wide font-semibold mb-1">Pore Size</div>
+                                <div class="text-xl font-bold text-stone-800 dark:text-white" id="panel-pore">0.1 – 10 µm</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-stone-500 uppercase tracking-wide font-semibold mb-1">Driving Force</div>
+                                <div class="text-xl font-bold text-stone-800 dark:text-white" id="panel-force">Pressure (0.1 – 2 bar)</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-stone-500 uppercase tracking-wide font-semibold mb-1">Membrane Material</div>
+                                <div class="text-base font-semibold text-stone-700 dark:text-stone-300" id="panel-membrane">PVDF, PTFE, PES</div>
+                            </div>
+                            <div>
+                                <div class="text-sm text-stone-500 uppercase tracking-wide font-semibold mb-1">MWCO</div>
+                                <div class="text-base font-semibold text-stone-700 dark:text-stone-300" id="panel-mwco">N/A (pore size based)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Retentate sidebar -->
+                    <div class="w-full md:w-1/3 bg-stone-50 dark:bg-stone-900 p-6 rounded-xl border border-stone-100 dark:border-stone-700">
+                        <h4 class="font-bold text-stone-800 dark:text-white mb-4 flex items-center gap-2">
+                            <span>🎯</span> Target Retentate
+                        </h4>
+                        <ul class="space-y-3" id="panel-targets">
+                            <li class="flex items-start gap-2 text-stone-600 dark:text-stone-400"><span class="text-teal-600 mt-1">✓</span> Intact Cells</li>
+                            <li class="flex items-start gap-2 text-stone-600 dark:text-stone-400"><span class="text-teal-600 mt-1">✓</span> Bacteria</li>
+                            <li class="flex items-start gap-2 text-stone-600 dark:text-stone-400"><span class="text-teal-600 mt-1">✓</span> Large Colloids</li>
+                            <li class="flex items-start gap-2 text-stone-600 dark:text-stone-400"><span class="text-teal-600 mt-1">✓</span> Cell Debris</li>
+                        </ul>
+                        <div class="mt-4 pt-4 border-t border-stone-200 dark:border-stone-700">
+                            <div class="text-xs text-stone-500 uppercase font-semibold mb-1">Key Application</div>
+                            <div class="text-sm text-stone-700 dark:text-stone-300 font-medium" id="panel-app">Cell harvesting, sterile filtration</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SLIDE 8: COMPARATIVE ANALYSIS TABLE ===== -->
+        <section id="comparison-table" class="scroll-mt-24 fade-in">
+            <div class="mb-8 text-center max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-stone-900 dark:text-white mb-3">Comparative Analysis</h2>
+                <p class="text-stone-600 dark:text-stone-400">Side-by-side technical specifications for all four membrane processes.</p>
+            </div>
+
+            <div class="bg-white dark:bg-stone-800 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="bg-stone-50 dark:bg-stone-900 border-b border-stone-200 dark:border-stone-700">
+                                <th class="text-left p-4 font-bold text-stone-700 dark:text-stone-300">Parameter</th>
+                                <th class="p-4 font-bold text-lime-700 dark:text-lime-400">Microfiltration</th>
+                                <th class="p-4 font-bold text-emerald-700 dark:text-emerald-400">Ultrafiltration</th>
+                                <th class="p-4 font-bold text-sky-700 dark:text-sky-400">Reverse Osmosis</th>
+                                <th class="p-4 font-bold text-teal-700 dark:text-teal-400">Dialysis</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-stone-100 dark:divide-stone-700">
+                            <tr class="hover:bg-stone-50 dark:hover:bg-stone-700/50 transition-colors">
+                                <td class="p-4 font-medium text-stone-700 dark:text-stone-300">Pore Size</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">0.1 – 10 µm</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">0.001 – 0.1 µm</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">&lt; 0.001 µm</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">0.001 – 0.01 µm</td>
+                            </tr>
+                            <tr class="hover:bg-stone-50 dark:hover:bg-stone-700/50 transition-colors">
+                                <td class="p-4 font-medium text-stone-700 dark:text-stone-300">Driving Force</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">Pressure</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">Pressure</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">Pressure</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">Conc. Gradient</td>
+                            </tr>
+                            <tr class="hover:bg-stone-50 dark:hover:bg-stone-700/50 transition-colors">
+                                <td class="p-4 font-medium text-stone-700 dark:text-stone-300">Pressure Range</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">0.1 – 2 bar</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">1 – 10 bar</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">15 – 80+ bar</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">None required</td>
+                            </tr>
+                            <tr class="hover:bg-stone-50 dark:hover:bg-stone-700/50 transition-colors">
+                                <td class="p-4 font-medium text-stone-700 dark:text-stone-300">Retained Species</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">Cells, bacteria</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">Proteins, viruses</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">Ions, salts</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">Proteins (salts pass)</td>
+                            </tr>
+                            <tr class="hover:bg-stone-50 dark:hover:bg-stone-700/50 transition-colors">
+                                <td class="p-4 font-medium text-stone-700 dark:text-stone-300">Energy Use</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">Low</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">Medium</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">High</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">Very Low</td>
+                            </tr>
+                            <tr class="hover:bg-stone-50 dark:hover:bg-stone-700/50 transition-colors">
+                                <td class="p-4 font-medium text-stone-700 dark:text-stone-300">MWCO</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">N/A</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">1 – 300 kDa</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">~100 Da</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">1 – 50 kDa</td>
+                            </tr>
+                            <tr class="hover:bg-stone-50 dark:hover:bg-stone-700/50 transition-colors">
+                                <td class="p-4 font-medium text-stone-700 dark:text-stone-300">Primary Biotech Use</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">Cell harvest, sterilization</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">Protein concentration</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">WFI production</td>
+                                <td class="p-4 text-center text-stone-600 dark:text-stone-400">Buffer exchange, desalting</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SLIDE 9: COMPARATIVE ANALYTICS (CHARTS) ===== -->
+        <section id="analytics" class="scroll-mt-24 fade-in">
+            <div class="mb-10 text-center max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-stone-900 dark:text-white mb-3">Comparative Analytics</h2>
+                <p class="text-stone-600 dark:text-stone-400">Visualize the operating constraints of each membrane separation technology.</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white dark:bg-stone-800 p-6 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700">
+                    <h3 class="text-lg font-bold text-stone-800 dark:text-white mb-2">Operating Pressure Range</h3>
+                    <p class="text-sm text-stone-500 dark:text-stone-400 mb-6">Comparing the mechanical force required (in bars) to drive permeation.</p>
+                    <div class="chart-container w-full">
+                        <canvas id="pressureChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-stone-800 p-6 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700">
+                    <h3 class="text-lg font-bold text-stone-800 dark:text-white mb-2">Pore Size Spectrum</h3>
+                    <p class="text-sm text-stone-500 dark:text-stone-400 mb-6">Logarithmic scale (µm) showing particles retained by each membrane type.</p>
+                    <div class="chart-container w-full">
+                        <canvas id="poreSizeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SLIDES 10–11: MATERIALS SECTION ===== -->
+        <section id="materials" class="scroll-mt-24 fade-in">
+            <div class="mb-10 text-center max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-stone-900 dark:text-white mb-3">Membrane Materials</h2>
+                <p class="text-stone-600 dark:text-stone-400">The physical and chemical nature of membrane materials dictates performance,
+                    selectivity, and compatibility with biological systems.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-8">
+                <!-- Polymeric Membranes -->
+                <div class="bg-white dark:bg-stone-800 p-6 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700">
+                    <h3 class="text-lg font-bold text-stone-800 dark:text-white mb-4">Polymeric Membranes</h3>
+                    <div class="space-y-3">
+                        <div class="flex gap-3 p-3 bg-stone-50 dark:bg-stone-900 rounded-lg">
+                            <div class="text-2xl flex-none">🧪</div>
+                            <div>
+                                <div class="font-semibold text-stone-800 dark:text-white text-sm">PVDF (Polyvinylidene Fluoride)</div>
+                                <div class="text-xs text-stone-500 dark:text-stone-400 mt-0.5">High chemical resistance; MF/UF; hydrophobic — can be surface-modified</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 p-3 bg-stone-50 dark:bg-stone-900 rounded-lg">
+                            <div class="text-2xl flex-none">🔬</div>
+                            <div>
+                                <div class="font-semibold text-stone-800 dark:text-white text-sm">PES (Polyethersulfone)</div>
+                                <div class="text-xs text-stone-500 dark:text-stone-400 mt-0.5">Low protein binding; widely used in UF; good thermal stability</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 p-3 bg-stone-50 dark:bg-stone-900 rounded-lg">
+                            <div class="text-2xl flex-none">⚗️</div>
+                            <div>
+                                <div class="font-semibold text-stone-800 dark:text-white text-sm">Cellulose Acetate (CA)</div>
+                                <div class="text-xs text-stone-500 dark:text-stone-400 mt-0.5">Classic RO membrane; hydrophilic; limited pH and temperature range</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 p-3 bg-stone-50 dark:bg-stone-900 rounded-lg">
+                            <div class="text-2xl flex-none">🏗️</div>
+                            <div>
+                                <div class="font-semibold text-stone-800 dark:text-white text-sm">Polyamide (PA) — Thin Film Composite</div>
+                                <div class="text-xs text-stone-500 dark:text-stone-400 mt-0.5">State-of-the-art RO; &gt;99% salt rejection; sensitive to chlorine</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inorganic & Advanced Membranes -->
+                <div class="bg-white dark:bg-stone-800 p-6 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700">
+                    <h3 class="text-lg font-bold text-stone-800 dark:text-white mb-4">Inorganic &amp; Advanced Membranes</h3>
+                    <div class="space-y-3">
+                        <div class="flex gap-3 p-3 bg-stone-50 dark:bg-stone-900 rounded-lg">
+                            <div class="text-2xl flex-none">🏺</div>
+                            <div>
+                                <div class="font-semibold text-stone-800 dark:text-white text-sm">Ceramic (Al₂O₃, ZrO₂, TiO₂)</div>
+                                <div class="text-xs text-stone-500 dark:text-stone-400 mt-0.5">Excellent thermal &amp; chemical stability; MF/UF; CIP-compatible; higher cost</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 p-3 bg-stone-50 dark:bg-stone-900 rounded-lg">
+                            <div class="text-2xl flex-none">🔩</div>
+                            <div>
+                                <div class="font-semibold text-stone-800 dark:text-white text-sm">Stainless Steel</div>
+                                <div class="text-xs text-stone-500 dark:text-stone-400 mt-0.5">MF application; extremely durable; used in steam sterilization environments</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 p-3 bg-stone-50 dark:bg-stone-900 rounded-lg">
+                            <div class="text-2xl flex-none">💎</div>
+                            <div>
+                                <div class="font-semibold text-stone-800 dark:text-white text-sm">Graphene Oxide (Emerging)</div>
+                                <div class="text-xs text-stone-500 dark:text-stone-400 mt-0.5">Ultra-thin; tunable pore size; next-gen desalination candidate</div>
+                            </div>
+                        </div>
+                        <div class="flex gap-3 p-3 bg-stone-50 dark:bg-stone-900 rounded-lg">
+                            <div class="text-2xl flex-none">🧬</div>
+                            <div>
+                                <div class="font-semibold text-stone-800 dark:text-white text-sm">Aquaporin-Based (Biomimetic)</div>
+                                <div class="text-xs text-stone-500 dark:text-stone-400 mt-0.5">Protein water channels; extremely high water permeability with perfect selectivity</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Module Configurations -->
+            <div class="bg-white dark:bg-stone-800 p-6 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700">
+                <h3 class="text-lg font-bold text-stone-800 dark:text-white mb-4">Membrane Module Configurations</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="p-4 bg-stone-50 dark:bg-stone-900 rounded-xl text-center process-card">
+                        <div class="text-3xl mb-2">🌀</div>
+                        <div class="font-semibold text-sm text-stone-800 dark:text-white">Spiral Wound</div>
+                        <div class="text-xs text-stone-500 dark:text-stone-400 mt-1">RO/NF/UF; compact; high packing density</div>
+                    </div>
+                    <div class="p-4 bg-stone-50 dark:bg-stone-900 rounded-xl text-center process-card">
+                        <div class="text-3xl mb-2">🪡</div>
+                        <div class="font-semibold text-sm text-stone-800 dark:text-white">Hollow Fiber</div>
+                        <div class="text-xs text-stone-500 dark:text-stone-400 mt-1">UF/MF/Dialysis; self-supporting; back-flushable</div>
+                    </div>
+                    <div class="p-4 bg-stone-50 dark:bg-stone-900 rounded-xl text-center process-card">
+                        <div class="text-3xl mb-2">📚</div>
+                        <div class="font-semibold text-sm text-stone-800 dark:text-white">Flat Sheet / Plate</div>
+                        <div class="text-xs text-stone-500 dark:text-stone-400 mt-1">Lab-scale; easy membrane replacement; dialysis &amp; UF</div>
+                    </div>
+                    <div class="p-4 bg-stone-50 dark:bg-stone-900 rounded-xl text-center process-card">
+                        <div class="text-3xl mb-2">🧱</div>
+                        <div class="font-semibold text-sm text-stone-800 dark:text-white">Tubular</div>
+                        <div class="text-xs text-stone-500 dark:text-stone-400 mt-1">MF/UF; handles high-solids feed; easy cleaning</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SLIDE 12: KEY APPLICATIONS ===== -->
+        <section id="applications" class="scroll-mt-24 fade-in">
+            <div class="bg-teal-900 dark:bg-teal-950 text-teal-50 p-8 md:p-12 rounded-3xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-12 opacity-10 text-9xl pointer-events-none select-none">🔬</div>
+                <div class="relative z-10">
+                    <div class="max-w-2xl mb-10">
+                        <h2 class="text-3xl font-bold text-white mb-3">Biotechnological Applications Matrix</h2>
+                        <p class="text-teal-200">Select the correct membrane process based on standard biomanufacturing use cases.</p>
+                    </div>
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="bg-teal-800/50 p-5 rounded-xl border border-teal-700 hover:bg-teal-800 transition-colors">
+                            <div class="text-3xl mb-3">🧫</div>
+                            <h4 class="font-bold text-white mb-2">Cell Harvesting</h4>
+                            <p class="text-sm text-teal-200 mb-4">Removing fermentation broth from intact cells post-culture.</p>
+                            <div class="inline-block px-2 py-1 bg-teal-950 text-teal-300 text-xs font-bold rounded">Primary: MF</div>
+                        </div>
+                        <div class="bg-teal-800/50 p-5 rounded-xl border border-teal-700 hover:bg-teal-800 transition-colors">
+                            <div class="text-3xl mb-3">🧬</div>
+                            <h4 class="font-bold text-white mb-2">Protein Concentration</h4>
+                            <p class="text-sm text-teal-200 mb-4">Reducing volume to increase antibody and enzyme titer.</p>
+                            <div class="inline-block px-2 py-1 bg-teal-950 text-teal-300 text-xs font-bold rounded">Primary: UF</div>
+                        </div>
+                        <div class="bg-teal-800/50 p-5 rounded-xl border border-teal-700 hover:bg-teal-800 transition-colors">
+                            <div class="text-3xl mb-3">💧</div>
+                            <h4 class="font-bold text-white mb-2">WFI Generation</h4>
+                            <p class="text-sm text-teal-200 mb-4">Water for Injection production — ultrapure pharmaceutical water.</p>
+                            <div class="inline-block px-2 py-1 bg-teal-950 text-teal-300 text-xs font-bold rounded">Primary: RO</div>
+                        </div>
+                        <div class="bg-teal-800/50 p-5 rounded-xl border border-teal-700 hover:bg-teal-800 transition-colors">
+                            <div class="text-3xl mb-3">🔄</div>
+                            <h4 class="font-bold text-white mb-2">Buffer Exchange</h4>
+                            <p class="text-sm text-teal-200 mb-4">Swapping salts without altering protein concentration.</p>
+                            <div class="inline-block px-2 py-1 bg-teal-950 text-teal-300 text-xs font-bold rounded">Primary: Dialysis / UF</div>
+                        </div>
+                        <div class="bg-teal-800/50 p-5 rounded-xl border border-teal-700 hover:bg-teal-800 transition-colors">
+                            <div class="text-3xl mb-3">🦠</div>
+                            <h4 class="font-bold text-white mb-2">Virus Removal</h4>
+                            <p class="text-sm text-teal-200 mb-4">Critical viral clearance in biopharmaceutical manufacturing.</p>
+                            <div class="inline-block px-2 py-1 bg-teal-950 text-teal-300 text-xs font-bold rounded">Primary: UF (virus filter)</div>
+                        </div>
+                        <div class="bg-teal-800/50 p-5 rounded-xl border border-teal-700 hover:bg-teal-800 transition-colors">
+                            <div class="text-3xl mb-3">💊</div>
+                            <h4 class="font-bold text-white mb-2">Sterile Filtration</h4>
+                            <p class="text-sm text-teal-200 mb-4">Removing bioburden before filling and finishing operations.</p>
+                            <div class="inline-block px-2 py-1 bg-teal-950 text-teal-300 text-xs font-bold rounded">Primary: MF (0.22 µm)</div>
+                        </div>
+                        <div class="bg-teal-800/50 p-5 rounded-xl border border-teal-700 hover:bg-teal-800 transition-colors">
+                            <div class="text-3xl mb-3">🩸</div>
+                            <h4 class="font-bold text-white mb-2">Hemodialysis</h4>
+                            <p class="text-sm text-teal-200 mb-4">Removing waste metabolites from blood in renal failure patients.</p>
+                            <div class="inline-block px-2 py-1 bg-teal-950 text-teal-300 text-xs font-bold rounded">Primary: Dialysis</div>
+                        </div>
+                        <div class="bg-teal-800/50 p-5 rounded-xl border border-teal-700 hover:bg-teal-800 transition-colors">
+                            <div class="text-3xl mb-3">🌿</div>
+                            <h4 class="font-bold text-white mb-2">Diafiltration</h4>
+                            <p class="text-sm text-teal-200 mb-4">Sequential washing to remove low-MW impurities from protein solutions.</p>
+                            <div class="inline-block px-2 py-1 bg-teal-950 text-teal-300 text-xs font-bold rounded">Primary: UF</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SLIDE 13: INTERACTIVE RO FLUX SIMULATOR ===== -->
+        <section id="simulator" class="scroll-mt-24 fade-in">
+            <div class="mb-8 text-center max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-stone-900 dark:text-white mb-3">Interactive RO Flux Simulator</h2>
+                <p class="text-stone-600 dark:text-stone-400">Explore the relationship between applied pressure, osmotic pressure, and water flux
+                    using the Solution-Diffusion Model.</p>
+            </div>
+
+            <div class="bg-white dark:bg-stone-800 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700 p-8">
+                <div class="grid md:grid-cols-2 gap-8 items-start">
+                    <!-- Controls -->
+                    <div class="space-y-6">
+                        <div class="p-4 bg-teal-50 dark:bg-teal-900/30 rounded-xl border border-teal-100 dark:border-teal-800">
+                            <div class="text-sm font-bold text-teal-800 dark:text-teal-200 mb-2">RO Flux Equation (Solution-Diffusion Model)</div>
+                            <div class="text-base font-mono text-teal-900 dark:text-teal-100 bg-white dark:bg-stone-900 p-3 rounded-lg border border-teal-200 dark:border-teal-700">
+                                J<sub>w</sub> = A<sub>w</sub> &times; (&#916;P &minus; &#916;&pi;)
+                            </div>
+                            <p class="text-xs text-teal-700 dark:text-teal-300 mt-2">
+                                J<sub>w</sub> = water flux &nbsp;|&nbsp; A<sub>w</sub> = membrane permeability &nbsp;|&nbsp;
+                                &#916;P = applied pressure &nbsp;|&nbsp; &#916;&pi; = osmotic pressure difference
+                            </p>
+                        </div>
+
+                        <div>
+                            <label class="text-sm font-semibold text-stone-700 dark:text-stone-300 block mb-2">
+                                Applied Pressure (&#916;P):
+                                <span id="pressure-val" class="text-teal-600 dark:text-teal-400">40 bar</span>
+                            </label>
+                            <input type="range" id="pressure-slider" min="0" max="80" value="40" step="1"
+                                class="w-full h-2 rounded-full cursor-pointer">
+                        </div>
+
+                        <div>
+                            <label class="text-sm font-semibold text-stone-700 dark:text-stone-300 block mb-2">
+                                Osmotic Pressure (&#916;&pi;):
+                                <span id="osmotic-val" class="text-teal-600 dark:text-teal-400">15 bar</span>
+                            </label>
+                            <input type="range" id="osmotic-slider" min="0" max="60" value="15" step="1"
+                                class="w-full h-2 rounded-full cursor-pointer">
+                        </div>
+
+                        <div>
+                            <label class="text-sm font-semibold text-stone-700 dark:text-stone-300 block mb-2">
+                                Membrane Permeability (A<sub>w</sub>):
+                                <span id="permeability-val" class="text-teal-600 dark:text-teal-400">3.0 L/m²·h·bar</span>
+                            </label>
+                            <input type="range" id="permeability-slider" min="1" max="10" value="3" step="0.5"
+                                class="w-full h-2 rounded-full cursor-pointer">
+                        </div>
+                    </div>
+
+                    <!-- Results -->
+                    <div class="space-y-4">
+                        <div class="p-6 bg-stone-50 dark:bg-stone-900 rounded-xl border border-stone-200 dark:border-stone-700 text-center">
+                            <div class="text-sm text-stone-500 uppercase font-semibold mb-2">Net Driving Pressure</div>
+                            <div class="text-4xl font-extrabold text-stone-800 dark:text-white" id="ndp-result">25 bar</div>
+                            <div class="text-xs text-stone-400 mt-1">(&#916;P &minus; &#916;&pi;)</div>
+                        </div>
+
+                        <div class="p-6 bg-teal-50 dark:bg-teal-900/50 rounded-xl border border-teal-200 dark:border-teal-700 text-center">
+                            <div class="text-sm text-teal-600 dark:text-teal-400 uppercase font-semibold mb-2">
+                                Water Flux (J<sub>w</sub>)
+                            </div>
+                            <div class="text-5xl font-extrabold text-teal-700 dark:text-teal-300" id="flux-result">75.0</div>
+                            <div class="text-sm text-teal-500 mt-1">L/m²·h (LMH)</div>
+                        </div>
+
+                        <div id="flux-status"
+                            class="p-4 bg-green-50 dark:bg-green-900/30 rounded-xl border border-green-200 dark:border-green-700 text-center">
+                            <div class="text-green-700 dark:text-green-300 font-semibold text-sm">✅ Optimal Permeation</div>
+                            <div class="text-green-600 dark:text-green-400 text-xs mt-1">Net driving pressure is positive — good flux.</div>
+                        </div>
+
+                        <div class="chart-container" style="height: 180px; max-height: 180px;">
+                            <canvas id="fluxChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SLIDE 14: ECONOMICS / SUSTAINABILITY ===== -->
+        <section id="sustainability" class="scroll-mt-24 fade-in">
+            <div class="mb-10 text-center max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-stone-900 dark:text-white mb-3">Economics &amp; Sustainability</h2>
+                <p class="text-stone-600 dark:text-stone-400">Membrane processes offer significant economic and environmental advantages
+                    over traditional thermal separation methods.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-white dark:bg-stone-800 p-6 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700 process-card">
+                    <div class="text-3xl mb-3">💰</div>
+                    <h3 class="font-bold text-stone-800 dark:text-white mb-4">Relative Operating Cost</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-stone-600 dark:text-stone-400">MF</span>
+                            <div class="flex gap-1 text-lg">
+                                <span class="text-yellow-400">●</span><span class="text-stone-200 dark:text-stone-600">●●●</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-stone-600 dark:text-stone-400">UF</span>
+                            <div class="flex gap-1 text-lg">
+                                <span class="text-yellow-400">●●</span><span class="text-stone-200 dark:text-stone-600">●●</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-stone-600 dark:text-stone-400">RO</span>
+                            <div class="flex gap-1 text-lg">
+                                <span class="text-yellow-400">●●●●</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-stone-600 dark:text-stone-400">Dialysis</span>
+                            <div class="flex gap-1 text-lg">
+                                <span class="text-yellow-400">●</span><span class="text-stone-200 dark:text-stone-600">●●●</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-stone-500 dark:text-stone-400 mt-4">RO is highest due to energy demands; dialysis is lowest but slowest in throughput.</p>
+                </div>
+
+                <div class="bg-white dark:bg-stone-800 p-6 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700 process-card">
+                    <div class="text-3xl mb-3">🌱</div>
+                    <h3 class="font-bold text-stone-800 dark:text-white mb-4">Environmental Advantages</h3>
+                    <ul class="space-y-2 text-sm text-stone-600 dark:text-stone-400">
+                        <li class="flex items-start gap-2"><span class="text-teal-600 mt-0.5">✓</span> No chemical solvents required (vs chromatography)</li>
+                        <li class="flex items-start gap-2"><span class="text-teal-600 mt-0.5">✓</span> Lower energy vs. thermal evaporation or distillation</li>
+                        <li class="flex items-start gap-2"><span class="text-teal-600 mt-0.5">✓</span> Reduced wastewater generation</li>
+                        <li class="flex items-start gap-2"><span class="text-teal-600 mt-0.5">✓</span> Membranes can be cleaned and reused (CIP/SIP)</li>
+                        <li class="flex items-start gap-2"><span class="text-teal-600 mt-0.5">✓</span> Enable water recycling in biopharma facilities</li>
+                    </ul>
+                </div>
+
+                <div class="bg-white dark:bg-stone-800 p-6 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700 process-card">
+                    <div class="text-3xl mb-3">📈</div>
+                    <h3 class="font-bold text-stone-800 dark:text-white mb-4">Market Context</h3>
+                    <ul class="space-y-2 text-sm text-stone-600 dark:text-stone-400">
+                        <li class="flex items-start gap-2"><span class="text-sky-500 mt-0.5">→</span> Global membrane filtration market: ~$35B (2025)</li>
+                        <li class="flex items-start gap-2"><span class="text-sky-500 mt-0.5">→</span> CAGR: ~9% forecast through 2030</li>
+                        <li class="flex items-start gap-2"><span class="text-sky-500 mt-0.5">→</span> Biopharma: largest end-use segment</li>
+                        <li class="flex items-start gap-2"><span class="text-sky-500 mt-0.5">→</span> Asia-Pacific: fastest growing region</li>
+                        <li class="flex items-start gap-2"><span class="text-sky-500 mt-0.5">→</span> Driven by mAb &amp; gene therapy manufacturing growth</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SLIDE 15: FUTURE DIRECTIONS ===== -->
+        <section id="future" class="scroll-mt-24 fade-in">
+            <div class="mb-10 text-center max-w-2xl mx-auto">
+                <h2 class="text-3xl font-bold text-stone-900 dark:text-white mb-3">Future Directions</h2>
+                <p class="text-stone-600 dark:text-stone-400">Emerging technologies and trends shaping the next generation of membrane
+                    separation in biotechnology.</p>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white dark:bg-stone-800 p-6 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700 process-card">
+                    <div class="text-3xl mb-3">🧬</div>
+                    <h3 class="font-bold text-stone-800 dark:text-white mb-2">Biomimetic Membranes</h3>
+                    <p class="text-sm text-stone-600 dark:text-stone-400">Aquaporin-embedded membranes achieve 10× higher water permeability while maintaining perfect ion exclusion — mimicking biological cell membranes.</p>
+                </div>
+                <div class="bg-white dark:bg-stone-800 p-6 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700 process-card">
+                    <div class="text-3xl mb-3">💎</div>
+                    <h3 class="font-bold text-stone-800 dark:text-white mb-2">Graphene &amp; 2D Materials</h3>
+                    <p class="text-sm text-stone-600 dark:text-stone-400">Single-atom-thick graphene oxide membranes with atomic-scale pore control could revolutionize molecular-level separation with minimal energy input.</p>
+                </div>
+                <div class="bg-white dark:bg-stone-800 p-6 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700 process-card">
+                    <div class="text-3xl mb-3">🤖</div>
+                    <h3 class="font-bold text-stone-800 dark:text-white mb-2">AI-Driven Process Control</h3>
+                    <p class="text-sm text-stone-600 dark:text-stone-400">Machine learning models predict membrane fouling in real-time, optimize cleaning cycles, and adapt operating conditions to maintain peak flux with minimal downtime.</p>
+                </div>
+                <div class="bg-white dark:bg-stone-800 p-6 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700 process-card">
+                    <div class="text-3xl mb-3">⚡</div>
+                    <h3 class="font-bold text-stone-800 dark:text-white mb-2">Electrically Enhanced Filtration</h3>
+                    <p class="text-sm text-stone-600 dark:text-stone-400">Electrophoretic and electroosmotic effects combined with membrane filtration reduce fouling and dramatically improve selectivity for charged biomolecules.</p>
+                </div>
+                <div class="bg-white dark:bg-stone-800 p-6 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700 process-card">
+                    <div class="text-3xl mb-3">🔄</div>
+                    <h3 class="font-bold text-stone-800 dark:text-white mb-2">Continuous Bioprocessing</h3>
+                    <p class="text-sm text-stone-600 dark:text-stone-400">Replacing batch downstream processing with continuous tangential flow filtration (TFF) increases productivity, reduces facility footprint, and lowers cost of goods.</p>
+                </div>
+                <div class="bg-white dark:bg-stone-800 p-6 rounded-2xl shadow-sm border border-stone-200 dark:border-stone-700 process-card">
+                    <div class="text-3xl mb-3">🌍</div>
+                    <h3 class="font-bold text-stone-800 dark:text-white mb-2">Sustainable Membranes</h3>
+                    <p class="text-sm text-stone-600 dark:text-stone-400">Bio-based and recyclable membrane materials derived from cellulose nanofibers and renewable polymers aim to reduce the environmental impact of single-use modules.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ===== SLIDE 16: FOOTER ===== -->
+    <footer class="border-t border-stone-200 dark:border-stone-700 bg-white dark:bg-stone-800 py-10 text-center">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="text-2xl font-bold text-teal-700 dark:text-teal-400 mb-2">⚗️ BioMembrane</div>
+            <p class="text-stone-500 dark:text-stone-400 text-sm mb-1">Interactive Architecture &amp; Analysis Model &copy; 2026</p>
+            <p class="text-stone-400 dark:text-stone-500 text-xs mb-6">Data synthesized from standardized biotechnological separation principles.</p>
+            <div class="flex flex-wrap justify-center gap-4 text-xs text-stone-400 dark:text-stone-500">
+                <a href="#hero" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">Hero</a>
+                <a href="#overview" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">Overview</a>
+                <a href="#explorer" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">Explorer</a>
+                <a href="#comparison-table" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">Comparison</a>
+                <a href="#analytics" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">Analytics</a>
+                <a href="#materials" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">Materials</a>
+                <a href="#applications" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">Applications</a>
+                <a href="#simulator" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">Simulator</a>
+                <a href="#sustainability" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">Sustainability</a>
+                <a href="#future" class="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">Future</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ===== PROGRESS BAR =====
+        const progressBar = document.getElementById('progress-bar');
+        function updateProgressBar() {
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+            progressBar.style.width = progress + '%';
+        }
+        window.addEventListener('scroll', updateProgressBar, { passive: true });
+
+        // ===== THEME TOGGLE =====
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const htmlEl = document.documentElement;
+
+        function setTheme(isDark) {
+            if (isDark) {
+                htmlEl.classList.add('dark');
+                themeIcon.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                htmlEl.classList.remove('dark');
+                themeIcon.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        // Apply saved or preferred theme on load
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            setTheme(true);
+        }
+
+        themeToggle.addEventListener('click', () => {
+            setTheme(!htmlEl.classList.contains('dark'));
+        });
+
+        // ===== MEMBRANE DATA FOR TABS =====
+        const membraneData = {
+            mf: {
+                title: 'Microfiltration (MF)',
+                badge: 'Low Pressure',
+                desc: 'Microfiltration operates at low pressure to separate suspended particles, large colloids, and cells from dissolved solutes. It acts as a physical sieve, making it the standard for initial clarification steps.',
+                pore: '0.1 – 10 µm',
+                force: 'Pressure (0.1 – 2 bar)',
+                membrane: 'PVDF, PTFE, PES, Cellulose',
+                mwco: 'N/A (pore size based)',
+                targets: ['Intact Cells', 'Bacteria', 'Large Colloids', 'Cell Debris'],
+                app: 'Cell harvesting, sterile filtration (0.22 µm)'
+            },
+            uf: {
+                title: 'Ultrafiltration (UF)',
+                badge: 'Medium Pressure',
+                desc: 'Ultrafiltration uses highly porous membranes to separate molecules based on molecular weight. It is extensively used for fractionating macromolecules, concentrating proteins, and performing diafiltration.',
+                pore: '0.001 – 0.1 µm',
+                force: 'Pressure (1 – 10 bar)',
+                membrane: 'PES, Regenerated Cellulose, PVDF',
+                mwco: '1 – 300 kDa',
+                targets: ['Proteins & Enzymes', 'Viruses', 'Endotoxins', 'Macromolecules'],
+                app: 'Protein concentration, virus removal, diafiltration'
+            },
+            ro: {
+                title: 'Reverse Osmosis (RO)',
+                badge: 'High Pressure',
+                desc: 'Reverse Osmosis forces solvent through a semi-permeable membrane against a concentration gradient. It retains almost all dissolved species, making it critical for generating ultrapure pharmaceutical water.',
+                pore: '< 0.001 µm',
+                force: 'Pressure (15 – 80+ bar)',
+                membrane: 'Polyamide TFC (Thin Film Composite)',
+                mwco: '~100 Da',
+                targets: ['Monovalent Ions', 'Salts', 'Sugars', 'Small Aqueous Molecules'],
+                app: 'WFI generation, desalination, ultrapure water'
+            },
+            dialysis: {
+                title: 'Dialysis',
+                badge: 'Gradient Driven',
+                desc: 'Unlike RO/UF/MF, Dialysis is primarily driven by concentration gradients rather than hydrostatic pressure. Solutes diffuse across the membrane from high to low concentration, making it ideal for gentle desalting and buffer exchange.',
+                pore: '0.001 – 0.01 µm',
+                force: 'Concentration Gradient',
+                membrane: 'Regenerated Cellulose, Cuprophane',
+                mwco: '1 – 50 kDa',
+                targets: ['Small Salts (pass to dialysate)', 'Buffer Ions (pass)', 'Retains: Proteins', 'Retains: Macromolecules'],
+                app: 'Buffer exchange, desalting, hemodialysis'
+            }
+        };
+
+        // ===== TAB SWITCHING =====
+        const tabs = document.querySelectorAll('#tab-container button');
+        const panelBadge = document.getElementById('panel-badge');
+        const panelTitle = document.getElementById('panel-title');
+        const panelDesc = document.getElementById('panel-desc');
+        const panelPore = document.getElementById('panel-pore');
+        const panelForce = document.getElementById('panel-force');
+        const panelMembrane = document.getElementById('panel-membrane');
+        const panelMwco = document.getElementById('panel-mwco');
+        const panelTargets = document.getElementById('panel-targets');
+        const panelApp = document.getElementById('panel-app');
+
+        function switchTab(key) {
+            const data = membraneData[key];
+            if (!data) return;
+
+            tabs.forEach(t => {
+                t.classList.remove('tab-active');
+                t.classList.add('tab-inactive');
+            });
+            const activeTab = document.querySelector('[data-target="' + key + '"]');
+            if (activeTab) {
+                activeTab.classList.add('tab-active');
+                activeTab.classList.remove('tab-inactive');
+            }
+
+            panelBadge.textContent = data.badge;
+            panelTitle.textContent = data.title;
+            panelDesc.textContent = data.desc;
+            panelPore.textContent = data.pore;
+            panelForce.textContent = data.force;
+            panelMembrane.textContent = data.membrane;
+            panelMwco.textContent = data.mwco;
+            panelApp.textContent = data.app;
+
+            panelTargets.innerHTML = '';
+            data.targets.forEach(function(target) {
+                const li = document.createElement('li');
+                li.className = 'flex items-start gap-2 text-stone-600 dark:text-stone-400';
+                li.innerHTML = '<span class="text-teal-600 mt-1">\u2713</span> ' + target;
+                panelTargets.appendChild(li);
+            });
+
+            // Animate panel content
+            [panelBadge, panelTitle, panelDesc].forEach(function(el, i) {
+                el.animate(
+                    [{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 1, transform: 'translateY(0)' }],
+                    { duration: 300 + i * 100, fill: 'forwards', easing: 'ease-out' }
+                );
+            });
+        }
+
+        tabs.forEach(function(tab) {
+            tab.addEventListener('click', function() {
+                switchTab(tab.getAttribute('data-target'));
+            });
+        });
+
+        // ===== CHARTS =====
+        Chart.defaults.font.family = "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif";
+        Chart.defaults.color = '#78716C';
+
+        function getGridColor() {
+            return htmlEl.classList.contains('dark') ? '#44403C' : '#F5F5F4';
+        }
+
+        // Pressure Chart
+        const ctxPressure = document.getElementById('pressureChart').getContext('2d');
+        new Chart(ctxPressure, {
+            type: 'bar',
+            data: {
+                labels: ['MF', 'UF', 'RO', 'Dialysis'],
+                datasets: [
+                    {
+                        label: 'Min Pressure (bar)',
+                        data: [0.1, 1, 15, 0],
+                        backgroundColor: '#99F6E4',
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'Max Pressure (bar)',
+                        data: [2, 10, 80, 0.5],
+                        backgroundColor: '#0D9488',
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: { mode: 'index', intersect: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Pressure (Bar)' },
+                        grid: { color: getGridColor() }
+                    },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+
+        // Pore Size Chart
+        const ctxPore = document.getElementById('poreSizeChart').getContext('2d');
+        new Chart(ctxPore, {
+            type: 'line',
+            data: {
+                labels: ['RO', 'UF / Dialysis', 'MF'],
+                datasets: [
+                    {
+                        label: 'Upper Limit (µm)',
+                        data: [0.001, 0.1, 10],
+                        borderColor: '#0F766E',
+                        backgroundColor: 'rgba(15, 118, 110, 0.5)',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#0F766E',
+                        pointRadius: 6,
+                        showLine: false
+                    },
+                    {
+                        label: 'Lower Limit (µm)',
+                        data: [0.0001, 0.001, 0.1],
+                        borderColor: '#06B6D4',
+                        backgroundColor: 'rgba(6, 182, 212, 0.5)',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#06B6D4',
+                        pointRadius: 6,
+                        showLine: false
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: { position: 'bottom' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + context.parsed.x + ' µm';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        type: 'logarithmic',
+                        title: { display: true, text: 'Pore Size (µm) — Log Scale' },
+                        grid: { color: getGridColor() },
+                        min: 0.0001,
+                        max: 100
+                    },
+                    y: { grid: { display: false } }
+                }
+            }
+        });
+
+        // ===== RO FLUX SIMULATOR =====
+        const pressureSlider = document.getElementById('pressure-slider');
+        const osmoticSlider = document.getElementById('osmotic-slider');
+        const permeabilitySlider = document.getElementById('permeability-slider');
+        const pressureValEl = document.getElementById('pressure-val');
+        const osmoticValEl = document.getElementById('osmotic-val');
+        const permeabilityValEl = document.getElementById('permeability-val');
+        const ndpResult = document.getElementById('ndp-result');
+        const fluxResult = document.getElementById('flux-result');
+        const fluxStatus = document.getElementById('flux-status');
+
+        // Flux history sparkline chart
+        const ctxFlux = document.getElementById('fluxChart').getContext('2d');
+        const fluxHistory = new Array(20).fill(0);
+        const fluxChart = new Chart(ctxFlux, {
+            type: 'line',
+            data: {
+                labels: new Array(20).fill(''),
+                datasets: [{
+                    label: 'Flux (LMH)',
+                    data: fluxHistory.slice(),
+                    borderColor: '#0D9488',
+                    backgroundColor: 'rgba(13, 148, 136, 0.1)',
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: { duration: 200 },
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: 'Flux (LMH)' },
+                        grid: { color: getGridColor() }
+                    },
+                    x: { display: false }
+                }
+            }
+        });
+
+        function updateSimulator() {
+            const dP = parseFloat(pressureSlider.value);
+            const dPi = parseFloat(osmoticSlider.value);
+            const Aw = parseFloat(permeabilitySlider.value);
+
+            const ndp = dP - dPi;
+            const flux = Math.max(0, Aw * ndp);
+
+            pressureValEl.textContent = dP + ' bar';
+            osmoticValEl.textContent = dPi + ' bar';
+            permeabilityValEl.textContent = Aw.toFixed(1) + ' L/m\u00b2\u00b7h\u00b7bar';
+            ndpResult.textContent = ndp.toFixed(1) + ' bar';
+            fluxResult.textContent = flux.toFixed(1);
+
+            if (ndp <= 0) {
+                fluxStatus.className = 'p-4 bg-red-50 dark:bg-red-900/30 rounded-xl border border-red-200 dark:border-red-700 text-center';
+                fluxStatus.innerHTML = '<div class="text-red-700 dark:text-red-300 font-semibold text-sm">\u26d4 No Permeation</div><div class="text-red-600 dark:text-red-400 text-xs mt-1">Osmotic pressure exceeds applied pressure — flux is zero.</div>';
+            } else if (flux < 20) {
+                fluxStatus.className = 'p-4 bg-amber-50 dark:bg-amber-900/30 rounded-xl border border-amber-200 dark:border-amber-700 text-center';
+                fluxStatus.innerHTML = '<div class="text-amber-700 dark:text-amber-300 font-semibold text-sm">\u26a0\ufe0f Low Flux</div><div class="text-amber-600 dark:text-amber-400 text-xs mt-1">Increase pressure or reduce osmotic resistance.</div>';
+            } else {
+                fluxStatus.className = 'p-4 bg-green-50 dark:bg-green-900/30 rounded-xl border border-green-200 dark:border-green-700 text-center';
+                fluxStatus.innerHTML = '<div class="text-green-700 dark:text-green-300 font-semibold text-sm">\u2705 Optimal Permeation</div><div class="text-green-600 dark:text-green-400 text-xs mt-1">Net driving pressure is positive — good flux.</div>';
+            }
+
+            // Update sparkline
+            fluxHistory.push(flux);
+            fluxHistory.shift();
+            fluxChart.data.datasets[0].data = fluxHistory.slice();
+            fluxChart.update('none');
+        }
+
+        [pressureSlider, osmoticSlider, permeabilitySlider].forEach(function(slider) {
+            slider.addEventListener('input', updateSimulator);
+        });
+
+        updateSimulator(); // Initialize with default values
+
+        // ===== FADE-IN ON SCROLL (Intersection Observer) =====
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.08 });
+
+        fadeElements.forEach(function(el) { observer.observe(el); });
+    </script>
+</body>
+</html>
